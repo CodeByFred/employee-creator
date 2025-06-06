@@ -1,35 +1,69 @@
-HELP.md
+### General ###
+.env
+.DS_Store
+*.log
+logs
+*.class
+
+### Java / Spring Boot ###
 target/
+build/
 .mvn/wrapper/maven-wrapper.jar
+
+# Ignore IDE-specific build folders but allow in source dirs
 !**/src/main/**/target/
 !**/src/test/**/target/
-.env
-.class
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+### Node.js / Vite Frontend ###
+/frontend/node_modules/
+/frontend/dist/
+/frontend/dist-ssr/
+/frontend/.vite/
+*.local
 
-### IntelliJ IDEA ###
-.idea
+### IDEs ###
+
+## VS Code
+.vscode/
+!.vscode/extensions.json
+
+## IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+## Spring Tool Suite (STS)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+## NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+### Debug Logs ###
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+### Windows/Editor garbage ###
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+### Misc ###
+HELP.md
