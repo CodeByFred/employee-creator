@@ -1,6 +1,7 @@
 package io.nology.employeecreator.employee;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +20,6 @@ public class UpdateEmployeeDTO {
 
     private String address;
 
+    @Min(0)
     private Integer roleId;
 }

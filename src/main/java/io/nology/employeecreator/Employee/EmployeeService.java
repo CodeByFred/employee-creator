@@ -16,21 +16,21 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
 
-    EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
         this.employeeRepository = employeeRepository;
         this.roleRepository = roleRepository;
     }
 
     public Employee create(@Valid CreateEmployeeDTO data) {
 
-        Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND), "Role " + data.getRoleId() + " does not exists"));
+        Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND), "Role " + data.getRoleId() + " does not exist"));
 
         Employee newEmployee = new Employee();
-        newEmployee.setGivenName(data.getGivenName());
-        newEmployee.setSurname(data.getSurname());
-        newEmployee.setEmail(data.getEmail());
-        newEmployee.setPhone(data.getPhone());
-        newEmployee.setAddress(data.getAddress());
+        newEmployee.setGivenName(data.getGivenName().trim());
+        newEmployee.setSurname(data.getSurname().trim());
+        newEmployee.setEmail(data.getEmail().trim());
+        newEmployee.setPhone(data.getPhone().trim());
+        newEmployee.setAddress(data.getAddress().trim());
         newEmployee.setRole(role);
         return this.employeeRepository.save(newEmployee);
     }
@@ -74,7 +74,7 @@ public class EmployeeService {
         }
 
         if (data.getRoleId() != null) {
-            Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND), "Role " + data.getRoleId() + " does not exists"));
+            Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND), "Role " + data.getRoleId() + " does not exist"));
             employeeFromDB.setRole(role);
         }
 

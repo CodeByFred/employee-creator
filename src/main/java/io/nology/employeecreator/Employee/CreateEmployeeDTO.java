@@ -1,16 +1,15 @@
 package io.nology.employeecreator.employee;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 @Getter
 public class CreateEmployeeDTO {
 
-    @NotNull
+    @NotBlank
     private String givenName;
 
-    @NotNull
+    @NotBlank
     private String surname;
 
     @NotNull
@@ -20,9 +19,10 @@ public class CreateEmployeeDTO {
     @NotNull
     private String phone;
 
-    @NotNull
+    @NotBlank
     private String address;
 
     @NotNull
+    @Min(0)
     private Integer roleId;
 }

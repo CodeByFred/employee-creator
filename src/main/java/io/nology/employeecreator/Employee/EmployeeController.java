@@ -15,19 +15,19 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody CreateEmployeeDTO data) {
-        Employee saved = employeeService.create(data);
+        Employee saved = this.employeeService.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAll() {
-        return ResponseEntity.ok(employeeService.findAll());
+        return ResponseEntity.ok(this.employeeService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -49,7 +49,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
-        if(employeeService.deleteById(id)) {
+        if(this.employeeService.deleteById(id)) {
             return ResponseEntity.noContent().build();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee " + id + " does not exist");

@@ -9,47 +9,33 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "employees")
 public class Employee {
 
-    @Setter
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Setter
-    @Getter
     private String givenName;
 
-    @Setter
-    @Getter
     private String surname;
 
-    @Setter
-    @Getter
     @Column(unique = true)
-    @Email
+    @Email(message = "Invalid email format")
     private String email;
 
-    @Setter
-    @Getter
     @Column(unique = true)
     private String phone;
 
-    @Setter
-    @Getter
     private String address;
 
     @ManyToOne()
     @JoinColumn(name = "role_id", nullable = false)
-    @Getter
-    @Setter
     private Role role;
 
     @OneToMany(mappedBy = "employee")
-    @Getter
-    @Setter
     private List<Contract> contracts;
 }
