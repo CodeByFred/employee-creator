@@ -1,4 +1,4 @@
-package io.nology.employeecreator.Employee;
+package io.nology.employeecreator.employee;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

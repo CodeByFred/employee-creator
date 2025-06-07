@@ -1,0 +1,44 @@
+package io.nology.employeecreator.role;
+
+public enum RoleType {
+    // Engineering / Development
+    SOFTWARE_ENGINEER,
+    SENIOR_SOFTWARE_ENGINEER,
+    TECH_LEAD,
+    BACKEND_DEVELOPER,
+    FRONTEND_DEVELOPER,
+    FULL_STACK_DEVELOPER,
+
+    // Product
+    PRODUCT_MANAGER,
+    ASSOCIATE_PRODUCT_MANAGER,
+    PRODUCT_OWNER,
+
+    // Design
+    UX_DESIGNER,
+    UI_DESIGNER,
+    UX_RESEARCHER,
+
+    // Quality Assurance
+    QA_ENGINEER,
+    TEST_AUTOMATION_ENGINEER,
+    MANUAL_TESTER,
+
+    // DevOps / IT
+    DEVOPS_ENGINEER,
+    SITE_RELIABILITY_ENGINEER,
+    SYSTEMS_ADMINISTRATOR,
+
+    // Customer Support
+    TECH_SUPPORT_ENGINEER,
+    CUSTOMER_SUCCESS_SPECIALIST,
+
+    // Human Resources
+    HR_MANAGER,
+    RECRUITER,
+    OFFICE_ADMINISTRATOR,
+
+    // Sales
+    SALES_EXECUTIVE,
+    ACCOUNT_MANAGER
+}

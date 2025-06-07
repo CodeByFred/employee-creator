@@ -1,5 +1,6 @@
-package io.nology.employeecreator.Employee;
+package io.nology.employeecreator.employee;
 
+import io.nology.employeecreator.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
@@ -26,6 +27,11 @@ public class Employee {
 
     @Column
     private String address;
+
+    @ManyToOne()
+    @JoinColumn(name = "roleId", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public String getAddress() {
         return address;

@@ -1,4 +1,4 @@
-package io.nology.employeecreator.Employee;
+package io.nology.employeecreator.employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
