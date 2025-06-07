@@ -1,10 +1,13 @@
 package io.nology.employeecreator.employee;
 
+import io.nology.employeecreator.contract.Contract;
 import io.nology.employeecreator.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -44,4 +47,9 @@ public class Employee {
     @Getter
     @Setter
     private Role role;
+
+    @OneToMany(mappedBy = "employee")
+    @Getter
+    @Setter
+    private List<Contract> contracts;
 }
