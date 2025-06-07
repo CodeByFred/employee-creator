@@ -1,28 +1,23 @@
 package io.nology.employeecreator.employee;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class CreateEmployeeDTO {
+@Setter
+public class UpdateEmployeeDTO {
 
-    @NotNull
     private String givenName;
 
-    @NotNull
     private String surname;
 
-    @NotNull
     @Email(message = "Invalid email format")
     private String email;
 
-    @NotNull
     private String phone;
 
-    @NotNull
     private String address;
 
-    @NotNull
     private Integer roleId;
 }
