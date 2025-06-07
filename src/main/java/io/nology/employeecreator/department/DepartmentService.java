@@ -10,7 +10,7 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
 
-    DepartmentService(DepartmentRepository departmentRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
