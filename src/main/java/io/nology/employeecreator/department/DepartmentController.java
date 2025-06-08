@@ -1,5 +1,6 @@
 package io.nology.employeecreator.department;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/departments")
 public class DepartmentController {
@@ -23,15 +25,19 @@ public class DepartmentController {
 
     @GetMapping
     public ResponseEntity<List<Department>> getAll() {
-        return new ResponseEntity<>(this.departmentService.findAll(),HttpStatus.OK);
+        log.debug("GET /departments - Fetching all departments");
+        return new ResponseEntity<>(this.departmentService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable  Integer id) {
+    public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) {
+        log.debug("GET /departments/id - Fetching department with id {}", id);
         Optional<Department> foundDepartment = this.departmentService.findById(id);
-        if(foundDepartment.isPresent()) {
-            return new ResponseEntity<>(foundDepartment.get(),HttpStatus.OK);
+        if (foundDepartment.isPresent()) {
+            log.info("Department {} found", id);
+            return ResponseEntity.ok(foundDepartment.get());
         }
+        log.warn("Department {} not found", id);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department " + id + " does not exist");
     }
 }

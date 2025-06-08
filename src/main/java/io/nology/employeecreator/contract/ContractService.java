@@ -3,6 +3,7 @@ package io.nology.employeecreator.contract;
 import io.nology.employeecreator.employee.Employee;
 import io.nology.employeecreator.employee.EmployeeRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ContractService {
 
@@ -23,11 +25,15 @@ public class ContractService {
 
     public Contract create(@Valid CreateContractDTO data) {
 
-        Employee employee = employeeRepository.findById(data.getEmployeeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee " + data.getEmployeeId() + " does not exist"));
+        Employee employee = employeeRepository.findById(data.getEmployeeId()).orElseThrow(() -> {
+            log.warn("Employee {} not found", data.getEmployeeId());
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee " + data.getEmployeeId() + " does not exist");
+        });
 
         boolean hasActive = contractRepository.findByEmployeeId(employee.getId()).stream().anyMatch(Contract::isActive);
 
-        if(hasActive) {
+        if (hasActive) {
+            log.warn("Employee {} already has an active contract", employee.getId());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employee already has an active contract");
         }
 
@@ -39,14 +45,18 @@ public class ContractService {
         newContract.setHoursPerWeek(data.getHours());
         newContract.setEmployee(employee);
 
-        return this.contractRepository.save(newContract);
+        Contract saved = this.contractRepository.save(newContract);
+        log.info("Created contract {} for employee {}", saved.getId(), employee.getId());
+        return saved;
     }
 
     public List<Contract> findAll() {
+        log.debug("Fetching all contracts");
         return this.contractRepository.findAll();
     }
 
     public Optional<Contract> findById(Integer id) {
+        log.debug("Fetching contract by id {}", id);
         return this.contractRepository.findById(id);
     }
 }
