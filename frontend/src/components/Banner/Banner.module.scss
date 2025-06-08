@@ -1,0 +1,22 @@
+@use "../../styles/colors";
+@use "../../styles/media-queries";
+@use "../../styles/mixins";
+
+.banner {
+  @include mixins.flex(row, space-between, center);
+  background-color: colors.$primary-blue;
+  width: 100%;
+  height: 7vh;
+  padding: 1rem;
+
+  p {
+    @include mixins.text(2rem, 500);
+    color: white;
+  }
+
+  button {
+    width: 115px;
+    height: 35px;
+    @include mixins.text(0.75rem, 400);
+  }
+}

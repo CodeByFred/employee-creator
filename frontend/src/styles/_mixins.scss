@@ -1,6 +1,18 @@
+@use './colors';
+
 @mixin flex($direction: row, $justify: flex-start, $align: normal) {
   display: flex;
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align;
+}
+
+@mixin text($size, $weight: 400) {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-size: $size;
+  // acceptable weights are: 100-900
+  font-weight: $weight;
+  font-style: normal;
+  color: colors.$text-main
 }
