@@ -11,7 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
     Allows all endpoints
     Accepts frontend URL
      */
-    public void addCorsMapping(CorsRegistry registry) {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedOrigins("http://localhost:5173").allowedMethods("POST", "GET", "PATCH", "DELETE").allowedHeaders("*");
     }
 }

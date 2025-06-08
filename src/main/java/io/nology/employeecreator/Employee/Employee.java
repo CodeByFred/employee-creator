@@ -1,5 +1,6 @@
 package io.nology.employeecreator.employee;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.nology.employeecreator.contract.Contract;
 import io.nology.employeecreator.role.Role;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class Employee {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "employee")
     private List<Contract> contracts;
 }

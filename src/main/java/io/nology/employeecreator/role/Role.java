@@ -3,7 +3,11 @@ package io.nology.employeecreator.role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.nology.employeecreator.department.Department;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "roles")
 public class Role {

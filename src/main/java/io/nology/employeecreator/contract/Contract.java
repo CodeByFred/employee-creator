@@ -1,5 +1,6 @@
 package io.nology.employeecreator.contract;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.nology.employeecreator.employee.Employee;
 import jakarta.persistence.*;
@@ -43,6 +44,7 @@ public class Contract {
     private LocalDateTime updatedAt;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
