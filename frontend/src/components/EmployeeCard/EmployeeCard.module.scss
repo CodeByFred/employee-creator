@@ -1,0 +1,40 @@
+@use "../../styles/colors";
+@use "../../styles/media-queries";
+@use "../../styles/mixins";
+
+.container {
+  @include mixins.flex(row, space-between, center);
+  background-color: white;
+  border-bottom: 1px solid colors.$accent-blue;
+  width: 95%;
+  height: 55px;
+  padding: 0 2rem;
+}
+
+.icon {
+  color: colors.$accent-blue;
+  font-size: 1.75rem;
+}
+
+.text_container {
+  @include mixins.flex(row, flex-start, center);
+  flex: 1;
+  overflow: hidden;
+  p {
+    @include mixins.text(1.25rem, 500);
+    margin: 0 4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  span {
+    @include mixins.text(1.25rem, 700);
+    color: colors.$accent-blue;
+  }
+}
+
+.button_container {
+  @include mixins.flex(row, $align: center);
+  column-gap: 3rem;
+  flex-shrink: 0;
+}

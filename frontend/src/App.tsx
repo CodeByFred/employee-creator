@@ -1,12 +1,15 @@
 import "./App.scss";
 import Banner from "./components/Banner/Banner";
-// import EmployeeList from "./components/EmployeeList";
+import EmployeeCard from "./components/EmployeeCard/EmployeeCard";
 
 function App() {
   return (
-    <>
-    <Banner/>
-    </>
+    
+    <main>
+      <Banner/>
+      <EmployeeCard/>
+    </main>
+  
   )
 }
 

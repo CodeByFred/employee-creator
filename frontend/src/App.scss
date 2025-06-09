@@ -1,1 +1,9 @@
+@use "./styles/colors";
+@use "./styles/media-queries" as mq;
+@use "./styles/mixins";
 
+main {
+  background-color: colors.$neutral-gray;
+  @include mixins.flex(column, $align: center);
+  height: 100vh;
+}
