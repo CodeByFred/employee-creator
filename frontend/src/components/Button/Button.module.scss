@@ -1,0 +1,40 @@
+@use "../../styles/colors";
+@use "../../styles/mixins";
+
+.button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  @include mixins.text(1rem);
+  color: white;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    font-weight: 500;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.create {
+  background-color: green;
+}
+
+.delete {
+  background-color: colors.$highlight;
+}
+
+.update {
+  background-color: orange;
+}
+
+.contract {
+  background-color: colors.$neutral-gray;
+  color: colors.$text-main;
+}

@@ -1,0 +1,17 @@
+@use "../../styles/media-queries" as mq;
+@use "../../styles/mixins";
+
+.heading {
+  @include mixins.text(1.35rem, 500);
+  font-style: italic;
+  color: white;
+  margin: 0.5rem 0;
+
+  @include mq.tablet() {
+    font-size: 2rem;
+  }
+
+  @include mq.pc() {
+    font-size: 2.25rem;
+  }
+}
