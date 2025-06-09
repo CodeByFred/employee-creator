@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const roleOptions = [
   "ACCOUNT_MANAGER",
@@ -31,8 +31,8 @@ export const roleOptions = [
 export const employeeSchema = z.object({
   givenName: z.string().min(1, "Required"),
   surname: z.string().min(1, "Required"),
-  email: z.string().email("Invalid email"),
+  email: z.email("Invalid email"),
   phone: z.string().regex(/^\d{10}$/, "Must be 10 digits"),
   address: z.string().min(1, "Required"),
-  role: z.enum(roleOptions, { required_error: "Role is required" }),
+  role: z.string().min(1, "Role is required"),
 });

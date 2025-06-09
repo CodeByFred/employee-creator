@@ -1,14 +1,14 @@
-import classes from './EmployeeForm.module.scss';
-import {useForm} from "react-hook-form";
+import classes from "./EmployeeForm.module.scss";
+import { useForm } from "react-hook-form";
 import { employeeSchema, roleOptions } from "../../schemas/employee.schema";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from 'zod';
-import Button from '../Button/Button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod/v4";
+import Button from "../Button/Button";
 
 type EmployeeForm = z.infer<typeof employeeSchema>;
 
 const EmployeeForm = () => {
-const {
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -39,16 +39,23 @@ const {
 
       <select {...register("role")}>
         <option value="">Select a role</option>
-        {roleOptions.map((role) => <option key={role} value={role}>{role}</option>)}
-        {errors.role && <p>{errors.role.message}</p>}
+        {roleOptions.map((role) => (
+          <option key={role} value={role}>
+            {role}
+          </option>
+        ))}
       </select>
-
+      {errors.role && <p>{errors.role.message}</p>}
 
       <div className={classes.row}>
-        <Button onSelect={() => open} variant='delete' type="reset" >Clear</Button>
-        <Button onSelect={() => open} variant='create'type="submit" >Submit</Button>
+        <Button onSelect={() => open} variant="delete" type="reset">
+          Clear
+        </Button>
+        <Button onSelect={() => open} variant="create" type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );
-}
-export default EmployeeForm
+};
+export default EmployeeForm;

@@ -1,6 +1,6 @@
 import classes from "./CreateEmployeePage.module.scss";
-import ContractForm from "../../components/ContractForm/ContractForm"
-import EmployeeForm from "../../components/EmployeeForm/EmployeeForm"
+import ContractForm from "../../components/ContractForm/ContractForm";
+import EmployeeForm from "../../components/EmployeeForm/EmployeeForm";
 
 const CreateEmployeePage = () => {
   return (
@@ -8,6 +8,6 @@ const CreateEmployeePage = () => {
       <EmployeeForm />
       <ContractForm />
     </div>
-  )
-}
-export default CreateEmployeePage
+  );
+};
+export default CreateEmployeePage;
