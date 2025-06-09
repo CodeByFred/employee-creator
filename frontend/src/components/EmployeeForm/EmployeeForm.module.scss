@@ -1,0 +1,12 @@
+@use "../../styles/colors";
+@use "../../styles/media-queries";
+@use "../../styles/mixins";
+
+.form {
+  @include mixins.flex(column, center, center);
+}
+
+.row {
+  @include mixins.flex(row);
+  column-gap: 1rem;
+}
