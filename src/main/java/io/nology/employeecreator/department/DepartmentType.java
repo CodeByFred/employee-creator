@@ -17,5 +17,4 @@ public enum DepartmentType {
 
     // Internal Operations
     HUMAN_RESOURCES,
-    FINANCE,
 }

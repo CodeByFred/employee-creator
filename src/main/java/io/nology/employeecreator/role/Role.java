@@ -1,6 +1,6 @@
 package io.nology.employeecreator.role;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.nology.employeecreator.department.Department;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class Role {
 
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("roles")
     private Department department;
 }

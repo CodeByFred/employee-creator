@@ -24,9 +24,11 @@ public enum RoleType {
     TEST_AUTOMATION_ENGINEER,
     MANUAL_TESTER,
 
-    // DevOps / IT
+    // DevOps
     DEVOPS_ENGINEER,
     SITE_RELIABILITY_ENGINEER,
+
+     // IT
     SYSTEMS_ADMINISTRATOR,
 
     // Customer Support

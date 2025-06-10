@@ -1,5 +1,6 @@
 package io.nology.employeecreator.department;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.nology.employeecreator.role.Role;
 import jakarta.persistence.*;
@@ -22,6 +23,6 @@ public class Department {
     private DepartmentType department;
 
     @OneToMany(mappedBy = "department")
-    @JsonManagedReference
+    @JsonIgnoreProperties("roles")
     private List<Role> roles;
 }
