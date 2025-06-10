@@ -2,15 +2,15 @@ import Button from "../Button/Button";
 import classes from "./EmployeeCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import type { Employee, Contract } from "../../types/types";
+import type { Employee } from "../../types/types";
 import { Link } from "react-router-dom";
+import { deleteEmployee } from "../../services/employeeService";
 
 type Props = {
   employee: Employee;
-  contract: Contract;
 };
 
-const EmployeeCard = ({ employee, contract }: Props) => {
+const EmployeeCard = ({ employee }: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -31,17 +31,17 @@ const EmployeeCard = ({ employee, contract }: Props) => {
       </div>
 
       <div className={classes.buttons_container}>
-        <Link to={`/contracts/${contract?.employee.id}`}>
-          <Button onSelect={() => open} variant="contract" type="button">
-            Contract
+        <Link to={`/contracts/${employee.contracts[0].id}`} state={employee}>
+          <Button variant="contract">Contract</Button>
+        </Link>
+        <Link to={`/employees/${employee.id}/edit`} state={employee}>
+          <Button variant="update">Update</Button>
+        </Link>
+        <Link to={`/employees`}>
+          <Button onSelect={() => deleteEmployee(employee.id)} variant="delete">
+            Delete
           </Button>
         </Link>
-        <Button onSelect={() => open} variant="update" type="button">
-          Update
-        </Button>
-        <Button onSelect={() => open} variant="delete" type="button">
-          Delete
-        </Button>
       </div>
     </div>
   );

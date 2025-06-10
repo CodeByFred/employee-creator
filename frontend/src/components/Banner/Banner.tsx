@@ -7,10 +7,8 @@ const Banner = () => {
   return (
     <div className={classes.banner}>
       <Title>Team Tracker</Title>
-      <Link to="/create">
-        <Button onSelect={() => open} variant="create" type="button">
-          Add New Employee
-        </Button>
+      <Link to="/employees/create">
+        <Button variant="create">Add New Employee</Button>
       </Link>
     </div>
   );

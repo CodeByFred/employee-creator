@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
 import UpdateEmployeePage from "./pages/UpdateEmployeePage";
 import AllEmployeesPage from "./pages/AllEmployeesPage";
-import ContractForm from "./components/ContractForm/ContractForm";
+import ContractModal from "./components/ContractModal/ContractModal";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route path="/employees" element={<AllEmployeesPage />} />
           <Route path="/employees/create" element={<CreateEmployeePage />} />
           <Route path="/employees/:id/edit" element={<UpdateEmployeePage />} />
-          <Route path="/contracts/:id" element={<ContractForm />} />
+          <Route path="/contracts/:id" element={<ContractModal />} />
         </Routes>
       </main>
     </BrowserRouter>

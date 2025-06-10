@@ -25,4 +25,5 @@ export type Employee = {
   phone: string;
   address: string;
   role: Role;
+  contracts: Contract[];
 };
