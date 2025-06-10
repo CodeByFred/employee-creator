@@ -5,5 +5,5 @@
 main {
   background-color: colors.$neutral-gray;
   @include mixins.flex(column, $align: center);
-  height: 100vh;
+  min-height: 100vh;
 }

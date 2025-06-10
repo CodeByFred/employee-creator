@@ -2,8 +2,8 @@
 
 .container {
   background-color: white;
-  border: 1px solid black;
-  @include mixins.flex(column, center, center);
+  @include mixins.flex(row, center, center);
   gap: 5rem;
   width: 100%;
+  min-height: 100vh;
 }

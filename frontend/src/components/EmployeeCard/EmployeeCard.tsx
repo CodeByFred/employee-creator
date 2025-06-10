@@ -2,13 +2,15 @@ import Button from "../Button/Button";
 import classes from "./EmployeeCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import type { Employee } from "../../types/types";
+import type { Employee, Contract } from "../../types/types";
+import { Link } from "react-router-dom";
 
 type Props = {
   employee: Employee;
+  contract: Contract;
 };
 
-const EmployeeCard = ({ employee }: Props) => {
+const EmployeeCard = ({ employee, contract }: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -29,9 +31,11 @@ const EmployeeCard = ({ employee }: Props) => {
       </div>
 
       <div className={classes.buttons_container}>
-        <Button onSelect={() => open} variant="contract" type="button">
-          Contract
-        </Button>
+        <Link to={`/contracts/${contract?.employee.id}`}>
+          <Button onSelect={() => open} variant="contract" type="button">
+            Contract
+          </Button>
+        </Link>
         <Button onSelect={() => open} variant="update" type="button">
           Update
         </Button>
