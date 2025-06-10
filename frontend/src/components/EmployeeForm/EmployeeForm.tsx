@@ -4,6 +4,8 @@ import { employeeSchema, roleOptions } from "../../schemas/employee.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 import Button from "../Button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 
 type EmployeeForm = z.infer<typeof employeeSchema>;
 
@@ -22,39 +24,77 @@ const EmployeeForm = () => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("givenName")} placeholder="Given Name" />
-      {errors.givenName && <p>{errors.givenName.message}</p>}
+      <fieldset className={classes.fieldset}>
+        <legend>Employee Details</legend>
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faUser} /> Given Name
+          </label>
+          <input {...register("givenName")} placeholder="Enter your given name" />
+          <p>{errors.givenName?.message}</p>
+        </div>
 
-      <input {...register("surname")} placeholder="Surname" />
-      {errors.surname && <p>{errors.surname.message}</p>}
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Surname
+          </label>
+          <input {...register("surname")} placeholder="Enter your surname" />
+          <p>{errors.surname?.message}</p>
+        </div>
 
-      <input {...register("email")} placeholder="Email" />
-      {errors.email && <p>{errors.email.message}</p>}
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Email
+          </label>
+          <input {...register("email")} placeholder="Enter your email address" />
+          <p>{errors.email?.message}</p>
+        </div>
 
-      <input {...register("phone")} placeholder="Phone" />
-      {errors.phone && <p>{errors.phone.message}</p>}
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Phone Number
+          </label>
+          <input {...register("phone")} placeholder="Enter your phone number" />
+          <p>{errors.phone?.message}</p>
+        </div>
 
-      <input {...register("address")} placeholder="Address" />
-      {errors.address && <p>{errors.address.message}</p>}
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Address
+          </label>
+          <input {...register("address")} placeholder="Enter your address" />
+          <p>{errors.address?.message}</p>
+        </div>
 
-      <select {...register("role")}>
-        <option value="">Select a role</option>
-        {roleOptions.map((role) => (
-          <option key={role} value={role}>
-            {role}
-          </option>
-        ))}
-      </select>
-      {errors.role && <p>{errors.role.message}</p>}
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Role
+          </label>
+          <select {...register("role")}>
+            <option value="">Select a role</option>
+            {roleOptions.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+          <p>{errors.role?.message}</p>
+        </div>
 
-      <div className={classes.row}>
-        <Button onSelect={() => open} variant="delete" type="reset">
-          Clear
-        </Button>
-        <Button onSelect={() => open} variant="create" type="submit">
-          Submit
-        </Button>
-      </div>
+        <div className={classes.row}>
+          <Button onSelect={() => open} variant="delete" type="reset">
+            Clear
+          </Button>
+          <Button onSelect={() => open} variant="create" type="submit">
+            Submit
+          </Button>
+        </div>
+      </fieldset>
     </form>
   );
 };
