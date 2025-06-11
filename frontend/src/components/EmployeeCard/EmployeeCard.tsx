@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import type { Employee } from "../../types/types";
 import { Link } from "react-router-dom";
-import { deleteEmployee } from "../../services/employeeService";
 
 type Props = {
   employee: Employee;
+  onSelect: (id: number) => void | Promise<void>;
 };
 
-const EmployeeCard = ({ employee }: Props) => {
+const EmployeeCard = ({ employee, onSelect }: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -37,8 +37,8 @@ const EmployeeCard = ({ employee }: Props) => {
         <Link to={`/employees/${employee.id}/edit`} state={employee}>
           <Button variant="update">Update</Button>
         </Link>
-        <Link to={`/employees`}>
-          <Button onSelect={() => deleteEmployee(employee.id)} variant="delete">
+        <Link to={`/employees`} state={employee}>
+          <Button onSelect={() => onSelect(employee.id)} variant="delete">
             Delete
           </Button>
         </Link>

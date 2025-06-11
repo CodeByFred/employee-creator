@@ -2,7 +2,7 @@ import "./App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
 import UpdateEmployeePage from "./pages/UpdateEmployeePage";
-import AllEmployeesPage from "./pages/AllEmployeesPage";
+import AllEmployeesPage from "./pages/AllEmployeesPage/AllEmployeesPage";
 import ContractModal from "./components/ContractModal/ContractModal";
 
 function App() {

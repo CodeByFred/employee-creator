@@ -3,9 +3,10 @@
 @use "../../styles/mixins";
 
 .banner {
-  @include mixins.flex(row, space-between, center);
+  @include mixins.flex(row, flex-start, center);
   background-color: colors.$primary-blue;
   width: 100%;
   height: 7vh;
-  padding: 0 5rem;
+  padding-left: 4rem;
+  gap: 4rem;
 }

@@ -4,11 +4,11 @@
 
 .container {
   display: grid;
-  grid-template-columns: 75px 1fr 1fr;
+  grid-template-columns: 150px 6fr 1.5fr;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+  border-bottom: 1px solid colors.$accent-blue;
+  background: white;
 }
 .iconCell {
   @include mixins.flex(row, center, center);
