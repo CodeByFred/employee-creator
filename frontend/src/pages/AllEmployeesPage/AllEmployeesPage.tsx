@@ -22,7 +22,7 @@ const AllEmployeesPage = () => {
 
   return (
     <div className={classes.container}>
-      <Banner></Banner>
+      <Banner />
       <div className={classes.card}>
         {employees.map((employee) => (
           <EmployeeCard

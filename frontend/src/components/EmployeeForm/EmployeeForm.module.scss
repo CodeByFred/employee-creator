@@ -16,19 +16,24 @@
     border: 1px solid colors.$primary-blue;
     border-radius: 8px;
 
+    legend {
+      @include mixins.text(1.25rem, 500);
+      text-align: center;
+    }
+
     .field {
       width: 65%;
       @include mixins.flex(column);
       label {
         align-self: flex-start;
         margin-left: 0.75rem;
-        @include mixins.text(1rem, 500);
+        @include mixins.text(1.1rem, 500);
         color: colors.$primary-blue;
       }
 
       input,
       select {
-        @include mixins.text(1.25rem, 500);
+        @include mixins.text(1.1rem, 500);
         width: 100%;
         padding: 1rem;
         border: 1px solid colors.$text-main;

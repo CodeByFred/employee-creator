@@ -4,6 +4,8 @@ import { z } from "zod/v4";
 import { contractSchema } from "../../schemas/contract.schema";
 import Button from "../Button/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 
 type ContractForm = z.infer<typeof contractSchema>;
 
@@ -20,47 +22,91 @@ const ContractForm = () => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={classes.row}>
-        <label>
-          <input type="radio" value="PERMANENT" {...register("contractType")} />
-          Permanent
-        </label>
-        <label>
-          <input type="radio" value="CONTRACT" {...register("contractType")} />
-          Contract
-        </label>
-        {errors.contractType && <p>{errors.contractType.message}</p>}
-      </div>
+      <fieldset className={classes.fieldset}>
+        <legend>Contract Details</legend>
 
-      <input type="date" {...register("startDate")} />
-      {errors.startDate && <p>{errors.startDate.message}</p>}
+        <div className={classes.radio}>
+          <label className={classes.label_title}>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Contract Type
+          </label>
+          <div className={classes.row}>
+            <label>
+              <input type="radio" value="PERMANENT" {...register("contractType")} />
+              Permanent
+            </label>
+            <label>
+              <input type="radio" value="CONTRACT" {...register("contractType")} />
+              Contract
+            </label>
+          </div>
+          <p>{errors.contractType?.message}</p>
+        </div>
 
-      <input type="date" {...register("finishDate")} />
-      {errors.finishDate && <p>{errors.finishDate.message}</p>}
+        <div className={classes.radio}>
+          <label className={classes.label_title}>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Employment Type
+          </label>
+          <div className={classes.row}>
+            <label>
+              <input
+                type="radio"
+                value="FULL_TIME"
+                {...register("contractEmploymentType")}
+              />
+              Full-Time
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="PART_TIME"
+                {...register("contractEmploymentType")}
+              />
+              Part-Time
+            </label>
+          </div>
+          <p>{errors.contractEmploymentType?.message}</p>
+        </div>
 
-      <div className={classes.row}>
-        <label>
-          <input type="radio" value="FULL_TIME" {...register("contractEmploymentType")} />
-          Full-Time
-        </label>
-        <label>
-          <input type="radio" value="PART_TIME" {...register("contractEmploymentType")} />
-          Part-Time
-        </label>
-        {errors.contractEmploymentType && <p>{errors.contractEmploymentType.message}</p>}
-      </div>
+        <div className={classes.field}>
+          <label>
+            {" "}
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Start Date
+          </label>
+          <input type="date" {...register("startDate")} />
+          <p>{errors.startDate?.message}</p>
+        </div>
 
-      <input {...register("hours")} placeholder="Hours per week" />
-      {errors.hours && <p>{errors.hours.message}</p>}
+        <div className={classes.field}>
+          <label>
+            {" "}
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Finish Date
+          </label>
+          <input type="date" {...register("finishDate")} />
+          <p>{errors.finishDate?.message}</p>
+        </div>
 
-      <div className={classes.row}>
-        <Button onSelect={() => open} variant="delete" type="reset">
-          Clear
-        </Button>
-        <Button onSelect={() => open} variant="create" type="submit">
-          Submit
-        </Button>
-      </div>
+        <div className={classes.field}>
+          <label>
+            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            Role
+          </label>
+          <input {...register("hours")} placeholder="Hours per week" />
+          <p>{errors.hours?.message}</p>
+        </div>
+
+        <div className={classes.row}>
+          <Button variant="delete" type="reset">
+            Clear
+          </Button>
+          <Button variant="create" type="submit">
+            Submit
+          </Button>
+        </div>
+      </fieldset>
     </form>
   );
 };

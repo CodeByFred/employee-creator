@@ -6,7 +6,9 @@ import classes from "./Banner.module.scss";
 const Banner = () => {
   return (
     <div className={classes.banner}>
-      <Title>Team Tracker</Title>
+      <Link to="/employees" style={{ textDecoration: "none" }}>
+        <Title>Team Tracker</Title>
+      </Link>
       <Link to="/employees/create">
         <Button variant="create">Add New Employee</Button>
       </Link>
