@@ -1,7 +1,7 @@
 import "./App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
-import UpdateEmployeePage from "./pages/UpdateEmployeePage";
+import UpdateEmployeePage from "./pages/UpdateEmployeePage/UpdateEmployeePage";
 import AllEmployeesPage from "./pages/AllEmployeesPage/AllEmployeesPage";
 import ContractModal from "./components/ContractModal/ContractModal";
 
@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/employees" element={<AllEmployeesPage />} />
           <Route path="/employees/create" element={<CreateEmployeePage />} />
-          <Route path="/employees/:id/edit" element={<UpdateEmployeePage />} />
+          <Route path="/employees/edit/:id" element={<UpdateEmployeePage />} />
           <Route path="/contracts/:id" element={<ContractModal />} />
         </Routes>
       </main>

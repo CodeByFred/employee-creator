@@ -31,12 +31,14 @@ const EmployeeCard = ({ employee, onSelect }: Props) => {
       </div>
 
       <div className={classes.buttons_container}>
-        <Link to={`/contracts/${employee.contracts[0].id}`} state={employee}>
-          <Button variant="contract">Contract</Button>
-        </Link>
-        <Link to={`/employees/${employee.id}/edit`} state={employee}>
+        <Link to={`/employees/edit/${employee.id}`} state={employee}>
           <Button variant="update">Update</Button>
         </Link>
+
+        <Link to={`/contracts/${employee.contracts[0].id}`} state={employee}>
+          <Button variant="contract">View Contracts</Button>
+        </Link>
+
         <Link to={`/employees`} state={employee}>
           <Button onSelect={() => onSelect(employee.id)} variant="delete">
             Delete

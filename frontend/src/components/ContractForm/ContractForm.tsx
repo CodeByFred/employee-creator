@@ -9,12 +9,17 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 
 type ContractForm = z.infer<typeof contractSchema>;
 
-const ContractForm = () => {
+type Props = {
+  defaultValues?: Partial<ContractForm>;
+  readOnly?: boolean;
+};
+
+const ContractForm = ({ defaultValues, readOnly = false }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ContractForm>({ resolver: zodResolver(contractSchema) });
+  } = useForm<ContractForm>({ resolver: zodResolver(contractSchema), defaultValues });
 
   const onSubmit = (data: ContractForm) => {
     console.log(data);
@@ -32,11 +37,21 @@ const ContractForm = () => {
           </label>
           <div className={classes.row}>
             <label>
-              <input type="radio" value="PERMANENT" {...register("contractType")} />
+              <input
+                type="radio"
+                value="PERMANENT"
+                {...register("contractType")}
+                disabled={readOnly}
+              />
               Permanent
             </label>
             <label>
-              <input type="radio" value="CONTRACT" {...register("contractType")} />
+              <input
+                type="radio"
+                value="CONTRACT"
+                {...register("contractType")}
+                disabled={readOnly}
+              />
               Contract
             </label>
           </div>
@@ -54,6 +69,7 @@ const ContractForm = () => {
                 type="radio"
                 value="FULL_TIME"
                 {...register("contractEmploymentType")}
+                disabled={readOnly}
               />
               Full-Time
             </label>
@@ -62,6 +78,7 @@ const ContractForm = () => {
                 type="radio"
                 value="PART_TIME"
                 {...register("contractEmploymentType")}
+                disabled={readOnly}
               />
               Part-Time
             </label>
@@ -75,7 +92,7 @@ const ContractForm = () => {
             <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
             Start Date
           </label>
-          <input type="date" {...register("startDate")} />
+          <input type="date" {...register("startDate")} disabled={readOnly} />
           <p>{errors.startDate?.message}</p>
         </div>
 
@@ -85,17 +102,21 @@ const ContractForm = () => {
             <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
             Finish Date
           </label>
-          <input type="date" {...register("finishDate")} />
+          <input type="date" {...register("finishDate")} disabled={readOnly} />
           <p>{errors.finishDate?.message}</p>
         </div>
 
         <div className={classes.field}>
           <label>
             <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
-            Role
+            Number of Hours
           </label>
-          <input {...register("hours")} placeholder="Hours per week" />
-          <p>{errors.hours?.message}</p>
+          <input
+            {...register("hoursPerWeek")}
+            placeholder="Hours per week"
+            disabled={readOnly}
+          />
+          <p>{errors.hoursPerWeek?.message}</p>
         </div>
 
         <div className={classes.row}>

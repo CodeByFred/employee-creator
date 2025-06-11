@@ -15,5 +15,5 @@ export const contractSchema = z.object({
     "Employment type is required"
   ),
 
-  hours: z.string().regex(/^[1-9]\d*$/, "Minimum 1 hour required"),
+  hoursPerWeek: z.string().regex(/^[1-9]\d*$/, "Minimum 1 hour required"),
 });
