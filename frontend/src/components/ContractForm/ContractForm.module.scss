@@ -34,6 +34,7 @@
     @include mixins.text(1.1rem, 500);
   }
   p {
+    height: 1rem;
     @include mixins.text(0.85rem, 500);
     text-align: center;
     color: colors.$highlight;
@@ -70,6 +71,7 @@
     border-color: lightgray;
   }
   p {
+    height: 1rem;
     @include mixins.text(0.85rem, 500);
     color: colors.$highlight;
     margin: 0 0 0 0.75rem;

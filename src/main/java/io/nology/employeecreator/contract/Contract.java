@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "contracts")
+@Table(name = "contracts", uniqueConstraints = {@UniqueConstraint(columnNames = {"employee_id", "start_date"})})
 public class Contract {
 
     @Id

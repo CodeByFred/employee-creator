@@ -6,23 +6,39 @@ import Button from "../Button/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
+import { createContract } from "../../services/contractService";
 
 type ContractForm = z.infer<typeof contractSchema>;
 
 type Props = {
   defaultValues?: Partial<ContractForm>;
   readOnly?: boolean;
+  employeeId: number;
 };
 
-const ContractForm = ({ defaultValues, readOnly = false }: Props) => {
+const ContractForm = ({ defaultValues, readOnly = false, employeeId }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ContractForm>({ resolver: zodResolver(contractSchema), defaultValues });
+  } = useForm<ContractForm>({
+    resolver: zodResolver(contractSchema),
+    defaultValues: {
+      employeeId,
+      ...defaultValues,
+    },
+  });
 
-  const onSubmit = (data: ContractForm) => {
-    console.log(data);
+  const onSubmit = async (data: ContractForm) => {
+    try {
+      const contractWithEmployeeId = {
+        ...data,
+        employeeId,
+      };
+      await createContract(contractWithEmployeeId);
+    } catch (e) {
+      console.log("Failed to create contract:", e);
+    }
   };
 
   return (
@@ -68,7 +84,7 @@ const ContractForm = ({ defaultValues, readOnly = false }: Props) => {
               <input
                 type="radio"
                 value="FULL_TIME"
-                {...register("contractEmploymentType")}
+                {...register("employmentType")}
                 disabled={readOnly}
               />
               Full-Time
@@ -77,13 +93,13 @@ const ContractForm = ({ defaultValues, readOnly = false }: Props) => {
               <input
                 type="radio"
                 value="PART_TIME"
-                {...register("contractEmploymentType")}
+                {...register("employmentType")}
                 disabled={readOnly}
               />
               Part-Time
             </label>
           </div>
-          <p>{errors.contractEmploymentType?.message}</p>
+          <p>{errors.employmentType?.message}</p>
         </div>
 
         <div className={classes.field}>
@@ -112,11 +128,11 @@ const ContractForm = ({ defaultValues, readOnly = false }: Props) => {
             Number of Hours
           </label>
           <input
-            {...register("hoursPerWeek")}
+            {...register("hours", { valueAsNumber: true })}
             placeholder="Hours per week"
             disabled={readOnly}
           />
-          <p>{errors.hoursPerWeek?.message}</p>
+          <p>{errors.hours?.message}</p>
         </div>
 
         <div className={classes.row}>

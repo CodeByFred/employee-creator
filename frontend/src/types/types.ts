@@ -7,14 +7,23 @@ export type Role = {
   department: Department;
 };
 
+export type RoleOption = {
+  roleId: number;
+  roleType: string;
+  department: {
+    departmentId: number;
+    department: string;
+  };
+};
+
 export type Contract = {
   id: number;
   contractType: string;
   startDate: Date;
   finishDate: Date;
-  contractEmploymentType: string;
+  employmentType: string;
   hoursPerWeek: number;
-  employee: Employee;
+  employeeId: number;
 };
 
 export type Employee = {

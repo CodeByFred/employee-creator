@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import type { Employee } from "../../types/types";
 import { Link } from "react-router-dom";
+import { formatRole } from "../../utils/utils";
 
 type Props = {
   employee: Employee;
@@ -21,9 +22,10 @@ const EmployeeCard = ({ employee, onSelect }: Props) => {
         <p>ID: {employee.id}</p>
         <p>
           <span>
-            {employee.givenName} {employee.surname}
-          </span>{" "}
-          | {employee.role.roleType} | {employee.role.department.department}
+            {employee.givenName} {employee.surname}{" "}
+          </span>
+          | {formatRole(employee.role.roleType)} |{" "}
+          {formatRole(employee.role.department.department)}
         </p>
         <p>{employee.phone}</p>
         <p>{employee.email}</p>
@@ -35,7 +37,7 @@ const EmployeeCard = ({ employee, onSelect }: Props) => {
           <Button variant="update">Update</Button>
         </Link>
 
-        <Link to={`/contracts/${employee.contracts[0].id}`} state={employee}>
+        <Link to={`/contracts/${employee.contracts[0]?.id}`} state={employee}>
           <Button variant="contract">View Contracts</Button>
         </Link>
 

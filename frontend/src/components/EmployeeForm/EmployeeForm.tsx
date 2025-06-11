@@ -1,15 +1,23 @@
 import classes from "./EmployeeForm.module.scss";
 import { useForm } from "react-hook-form";
-import { employeeSchema, roleOptions } from "../../schemas/employee.schema";
+import { employeeSchema } from "../../schemas/employee.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
+import type { RoleOption } from "../../types/types";
+import { useEffect, useState } from "react";
+import { getAllRoles } from "../../services/roleService";
+import { formatRole } from "../../utils/utils";
 
 type EmployeeForm = z.infer<typeof employeeSchema>;
 
-const EmployeeForm = () => {
+type Props = {
+  onFormSubmit: (data: EmployeeForm) => unknown;
+};
+
+const EmployeeForm = ({ onFormSubmit }: Props) => {
   const {
     register,
     handleSubmit,
@@ -18,12 +26,23 @@ const EmployeeForm = () => {
     resolver: zodResolver(employeeSchema),
   });
 
-  const onSubmit = (data: EmployeeForm) => {
-    console.log(data);
-  };
+  const [roles, setRoles] = useState<RoleOption[]>([]);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const data = await getAllRoles();
+        setRoles(data);
+      } catch (e) {
+        console.error("Failed to fetch roles", e);
+      }
+    };
+
+    fetchRoles();
+  }, []);
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={classes.form} onSubmit={handleSubmit(onFormSubmit)}>
       <fieldset className={classes.fieldset}>
         <legend>Employee Details</legend>
         <div className={classes.field}>
@@ -75,22 +94,24 @@ const EmployeeForm = () => {
             <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
             Role
           </label>
-          <select {...register("role")}>
+          <select {...register("roleId", { valueAsNumber: true })}>
             <option value="">Select a role</option>
-            {roleOptions.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
+            {[...roles]
+              .sort((a, b) => a.roleType.localeCompare(b.roleType))
+              .map((role) => (
+                <option key={role.roleId} value={role.roleId}>
+                  {formatRole(role.roleType)} ({formatRole(role.department.department)})
+                </option>
+              ))}
           </select>
-          <p>{errors.role?.message}</p>
+          <p>{errors.roleId?.message}</p>
         </div>
 
         <div className={classes.row}>
-          <Button onSelect={() => open} variant="delete" type="reset">
+          <Button variant="delete" type="reset">
             Clear
           </Button>
-          <Button onSelect={() => open} variant="create" type="submit">
+          <Button variant="create" type="submit">
             Submit
           </Button>
         </div>

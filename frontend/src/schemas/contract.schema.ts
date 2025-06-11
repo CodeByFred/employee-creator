@@ -5,15 +5,12 @@ export const contractSchema = z.object({
     [z.enum(["CONTRACT", "PERMANENT"])],
     "Contract type is required"
   ),
-
   startDate: z.iso.date(),
-
   finishDate: z.iso.date().optional(),
-
-  contractEmploymentType: z.templateLiteral(
+  employmentType: z.templateLiteral(
     [z.enum(["FULL_TIME", "PART_TIME"])],
     "Employment type is required"
   ),
-
-  hoursPerWeek: z.string().regex(/^[1-9]\d*$/, "Minimum 1 hour required"),
+  hours: z.number().gte(1),
+  employeeId: z.number().gte(1),
 });
