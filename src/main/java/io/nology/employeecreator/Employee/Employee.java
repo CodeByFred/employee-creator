@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -33,11 +34,16 @@ public class Employee {
 
     private String address;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
+    private LocalDateTime deletedAt;
+
     @ManyToOne()
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contract> contracts;
 }

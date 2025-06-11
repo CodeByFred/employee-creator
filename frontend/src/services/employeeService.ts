@@ -8,13 +8,14 @@ export const getAllEmployees = async (): Promise<Employee[]> => {
   return response.data;
 };
 
-// create employee
+export const toggleIsActive = async (id: number) => {
+  console.log("Attempting to toggle employee is active status");
+  const response = await axios.put(API_URL + `/${id}/toggleIsActive`);
+  console.log(`Employee with id ${id} result is:`, response);
+};
 
-// update employee
-
-// delete employee
 export const deleteEmployee = async (id: number) => {
   console.log("Attempting to delete employee");
   const response = await axios.delete(API_URL + `/${id}`);
-  console.log(`Employee with id ${id} deleted`, response);
+  console.log(`Employee with id ${id} deleted result is:`, response);
 };

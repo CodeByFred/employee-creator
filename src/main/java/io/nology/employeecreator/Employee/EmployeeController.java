@@ -59,6 +59,22 @@ public class EmployeeController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    // Setting isActive to soft delete or re-activate an employee
+    @PutMapping("/{id}/toggleIsActive")
+    public ResponseEntity<Employee> toggleActive(@PathVariable Integer id) {
+        log.info("PUT /employees/id/toggle-active - Toggling employee id {} isActive", id);
+        Employee employee = this.employeeService.findById(id)
+                .orElseThrow(() -> {log.warn("Employee id {} does not exist", id); return  new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not update Employee " + id + " that employee does not exist");});
+
+
+        boolean response = this.employeeService.toggleIsActive(employee);
+        if(response) {
+            log.info("Employee id {} isActive status is now {}", id, employee);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Employee " + id + " could not be updated");
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {

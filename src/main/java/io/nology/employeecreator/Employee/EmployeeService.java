@@ -98,6 +98,13 @@ public class EmployeeService {
         return Optional.of(employeeFromDB);
     }
 
+    public boolean toggleIsActive(Employee employee) {
+        employee.setActive(!employee.isActive());
+        this.employeeRepository.save(employee);
+        log.info("Employee id {} isActive status has been modified", employee.getId());
+        return true;
+    }
+
     public boolean deleteById(Integer id) {
         Optional<Employee> foundEmployee = this.findById(id);
         if (foundEmployee.isEmpty()) {
@@ -108,4 +115,6 @@ public class EmployeeService {
         log.info("Deleting employee id {}", id);
         return true;
     }
+
+
 }
