@@ -1,12 +1,14 @@
 import classes from "./AllEmployeesPage.module.scss";
 import { useState, useEffect } from "react";
 import { deleteEmployee, getAllEmployees } from "../../services/employeeService";
-import type { Employee } from "../../types/types";
+import type { Contract, Employee } from "../../types/types";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard";
 import Banner from "../../components/Banner/Banner";
+import ContractModal from "../../components/ContractModal/ContractModal";
 
 const AllEmployeesPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employeeContracts, setEmployeeContracts] = useState<Contract[]>([]);
 
   useEffect(() => {
     getAllEmployees()
@@ -29,9 +31,17 @@ const AllEmployeesPage = () => {
             key={employee.id}
             employee={employee}
             onSelect={() => handleDelete(employee.id)}
+            setEmployeeContract={setEmployeeContracts}
           />
         ))}
       </div>
+
+      {employeeContracts.length > 0 && (
+        <ContractModal
+          contracts={employeeContracts}
+          closeModal={() => setEmployeeContracts([])}
+        />
+      )}
     </div>
   );
 };

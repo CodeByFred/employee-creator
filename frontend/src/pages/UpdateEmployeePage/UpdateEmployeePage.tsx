@@ -13,7 +13,11 @@ const UpdateEmployeePage = () => {
       <Banner />
       <div className={classes.forms}>
         {/* <EmployeeForm /> */}
-        <ContractForm defaultValues={employee.contracts[0]} readOnly />
+        <ContractForm
+          employeeId={employee.employeeId}
+          defaultValues={employee.contracts[0]}
+          readOnly
+        />
       </div>
     </div>
   );

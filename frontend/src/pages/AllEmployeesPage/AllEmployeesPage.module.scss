@@ -1,6 +1,7 @@
 @use "../../styles/mixins";
 
 .container {
+  z-index: 1;
   background-color: white;
   width: 85%;
   min-height: 100vh;

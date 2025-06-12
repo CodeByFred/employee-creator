@@ -18,10 +18,10 @@ export type RoleOption = {
 
 export type Contract = {
   id: number;
-  contractType: string;
-  startDate: Date;
-  finishDate: Date;
-  employmentType: string;
+  contractType: "CONTRACT" | "PERMANENT";
+  startDate: string;
+  finishDate: string;
+  contractEmploymentType: "FULL_TIME" | "PART_TIME";
   hoursPerWeek: number;
   employeeId: number;
 };

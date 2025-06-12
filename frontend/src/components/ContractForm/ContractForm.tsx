@@ -11,7 +11,7 @@ import { createContract } from "../../services/contractService";
 type ContractForm = z.infer<typeof contractSchema>;
 
 type Props = {
-  defaultValues?: Partial<ContractForm>;
+  defaultValues?: ContractForm;
   readOnly?: boolean;
   employeeId: number;
 };
@@ -84,7 +84,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employeeId }: Props) =>
               <input
                 type="radio"
                 value="FULL_TIME"
-                {...register("employmentType")}
+                {...register("contractEmploymentType")}
                 disabled={readOnly}
               />
               Full-Time
@@ -93,13 +93,13 @@ const ContractForm = ({ defaultValues, readOnly = false, employeeId }: Props) =>
               <input
                 type="radio"
                 value="PART_TIME"
-                {...register("employmentType")}
+                {...register("contractEmploymentType")}
                 disabled={readOnly}
               />
               Part-Time
             </label>
           </div>
-          <p>{errors.employmentType?.message}</p>
+          <p>{errors.contractEmploymentType?.message}</p>
         </div>
 
         <div className={classes.field}>
@@ -128,11 +128,11 @@ const ContractForm = ({ defaultValues, readOnly = false, employeeId }: Props) =>
             Number of Hours
           </label>
           <input
-            {...register("hours", { valueAsNumber: true })}
+            {...register("hoursPerWeek", { valueAsNumber: true })}
             placeholder="Hours per week"
             disabled={readOnly}
           />
-          <p>{errors.hours?.message}</p>
+          <p>{errors.hoursPerWeek?.message}</p>
         </div>
 
         <div className={classes.row}>

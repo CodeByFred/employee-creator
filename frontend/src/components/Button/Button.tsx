@@ -3,7 +3,7 @@ import classes from "./Button.module.scss";
 
 type ButtonProps = {
   children: React.ReactNode;
-  onSelect?: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   variant: "update" | "create" | "delete" | "contract";
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
@@ -11,7 +11,7 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  onSelect,
+  onClick,
   disabled = false,
   variant,
   type = "button",
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={`${classes.button} ${classes[variant]}`}
-      onClick={onSelect}
+      onClick={onClick}
       disabled={disabled}
       type={type}
     >
