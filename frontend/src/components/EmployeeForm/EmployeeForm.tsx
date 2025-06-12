@@ -62,55 +62,67 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
       <fieldset className={classes.fieldset}>
         <legend>Employee Details</legend>
         <div className={classes.field}>
-          <label>
+          <label htmlFor="gName">
             <FontAwesomeIcon icon={faUser} /> Given Name
           </label>
-          <input {...register("givenName")} placeholder="Enter your given name" />
+          <input
+            {...register("givenName")}
+            id="gName"
+            placeholder="Enter your given name"
+          />
           <p>{errors.givenName?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="sName">
             <FontAwesomeIcon icon={faPeopleGroup} className={classes.icon} />
             Surname
           </label>
-          <input {...register("surname")} placeholder="Enter your surname" />
+          <input {...register("surname")} id="sName" placeholder="Enter your surname" />
           <p>{errors.surname?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="email">
             <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
             Email
           </label>
-          <input {...register("email")} placeholder="Enter your email address" />
+          <input
+            {...register("email")}
+            id="email"
+            placeholder="Enter your email address"
+          />
           <p>{errors.email?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="phone">
             <FontAwesomeIcon icon={faPhone} className={classes.icon} />
             Phone Number
           </label>
-          <input {...register("phone")} placeholder="Enter your phone number" />
+          <input
+            {...register("phone")}
+            id="phone"
+            placeholder="Enter your phone number"
+          />
           <p>{errors.phone?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="address">
             <FontAwesomeIcon icon={faLocationDot} className={classes.icon} />
             Address
           </label>
-          <input {...register("address")} placeholder="Enter your address" />
+          <input {...register("address")} id="address" placeholder="Enter your address" />
           <p>{errors.address?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="role">
             <FontAwesomeIcon icon={faBriefcase} className={classes.icon} />
             Role
           </label>
-          <select {...register("roleId", { valueAsNumber: true })}>
+          <select {...register("roleId", { valueAsNumber: true })} id="role">
             <option value="">Select a role</option>
             {[...roles]
               .sort((a, b) => a.roleType.localeCompare(b.roleType))

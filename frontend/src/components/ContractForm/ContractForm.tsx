@@ -53,7 +53,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
         <legend>Contract Details</legend>
 
         <div className={classes.radio}>
-          <label className={classes.label_title}>
+          <label className={classes.label_title} htmlFor="contract">
             <FontAwesomeIcon icon={faFileSignature} className={classes.icon} />
             Contract Type
           </label>
@@ -81,7 +81,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
         </div>
 
         <div className={classes.radio}>
-          <label className={classes.label_title}>
+          <label className={classes.label_title} htmlFor="employment">
             <FontAwesomeIcon icon={faClock} className={classes.icon} />
             Employment Type
           </label>
@@ -109,27 +109,37 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="startDate">
             {" "}
             <FontAwesomeIcon icon={faCalendarDays} className={classes.icon} />
             Start Date
           </label>
-          <input type="date" {...register("startDate")} disabled={readOnly} />
+          <input
+            type="date"
+            {...register("startDate")}
+            disabled={readOnly}
+            id="startDate"
+          />
           <p>{errors.startDate?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="finishDate">
             {" "}
             <FontAwesomeIcon icon={faCalendarDays} className={classes.icon} />
             Finish Date
           </label>
-          <input type="date" {...register("finishDate")} disabled={readOnly} />
+          <input
+            type="date"
+            {...register("finishDate")}
+            disabled={readOnly}
+            id="finishDate"
+          />
           <p>{errors.finishDate?.message}</p>
         </div>
 
         <div className={classes.field}>
-          <label>
+          <label htmlFor="hours">
             <FontAwesomeIcon icon={faBusinessTime} className={classes.icon} />
             Number of Hours
           </label>
@@ -137,6 +147,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
             {...register("hoursPerWeek", { valueAsNumber: true })}
             placeholder="Hours per week"
             disabled={readOnly}
+            id="hours"
           />
           <p>{errors.hoursPerWeek?.message}</p>
         </div>

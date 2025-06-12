@@ -5,8 +5,8 @@
 .form {
   @include mixins.flex(column, center, center);
   gap: 2rem;
-  width: 30%;
-  max-width: 600px;
+  width: 50%;
+  max-width: 800px;
 
   .fieldset {
     @include mixins.flex(column, center, center);
