@@ -5,7 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBriefcase,
+  faEnvelope,
+  faLocationDot,
+  faPeopleGroup,
+  faPhone,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Role } from "../../types/types";
 import { useEffect, useState } from "react";
 import { getAllRoles } from "../../services/roleService";
@@ -64,7 +71,7 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
 
         <div className={classes.field}>
           <label>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faPeopleGroup} className={classes.icon} />
             Surname
           </label>
           <input {...register("surname")} placeholder="Enter your surname" />
@@ -82,7 +89,7 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
 
         <div className={classes.field}>
           <label>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faPhone} className={classes.icon} />
             Phone Number
           </label>
           <input {...register("phone")} placeholder="Enter your phone number" />
@@ -91,7 +98,7 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
 
         <div className={classes.field}>
           <label>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faLocationDot} className={classes.icon} />
             Address
           </label>
           <input {...register("address")} placeholder="Enter your address" />
@@ -100,7 +107,7 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
 
         <div className={classes.field}>
           <label>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faBriefcase} className={classes.icon} />
             Role
           </label>
           <select {...register("roleId", { valueAsNumber: true })}>

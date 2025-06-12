@@ -5,9 +5,14 @@ import { contractSchema } from "../../schemas/contract.schema";
 import Button from "../Button/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 import { createContract } from "../../services/contractService";
 import type { Employee } from "../../types/types";
+import {
+  faBusinessTime,
+  faCalendarDays,
+  faClock,
+  faFileSignature,
+} from "@fortawesome/free-solid-svg-icons";
 
 type ContractForm = z.infer<typeof contractSchema>;
 
@@ -49,7 +54,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
 
         <div className={classes.radio}>
           <label className={classes.label_title}>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faFileSignature} className={classes.icon} />
             Contract Type
           </label>
           <div className={classes.row}>
@@ -77,7 +82,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
 
         <div className={classes.radio}>
           <label className={classes.label_title}>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faClock} className={classes.icon} />
             Employment Type
           </label>
           <div className={classes.row}>
@@ -106,7 +111,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
         <div className={classes.field}>
           <label>
             {" "}
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faCalendarDays} className={classes.icon} />
             Start Date
           </label>
           <input type="date" {...register("startDate")} disabled={readOnly} />
@@ -116,7 +121,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
         <div className={classes.field}>
           <label>
             {" "}
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faCalendarDays} className={classes.icon} />
             Finish Date
           </label>
           <input type="date" {...register("finishDate")} disabled={readOnly} />
@@ -125,7 +130,7 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
 
         <div className={classes.field}>
           <label>
-            <FontAwesomeIcon icon={faEnvelope} className={classes.icon} />
+            <FontAwesomeIcon icon={faBusinessTime} className={classes.icon} />
             Number of Hours
           </label>
           <input
