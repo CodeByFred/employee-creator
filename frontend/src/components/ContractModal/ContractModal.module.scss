@@ -2,18 +2,17 @@
 @use "../../styles/mixins";
 
 .container {
-  align-self: flex-end;
   position: fixed;
   width: 100%;
   height: 100vh;
   position: fixed;
   background: rgba(0, 0, 0, 0.6);
   z-index: 2;
-  @include mixins.flex(row, flex-end, center);
+  @include mixins.flex(row, center, center);
 }
 
 .modal_info {
-  @include mixins.text(0.9rem);
+  @include mixins.text(1.1rem);
   background: white;
   padding: 1.25rem;
   border-radius: 8px;
@@ -25,6 +24,9 @@
 }
 
 .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   font-size: 1.5rem;
   border: none;
   background: transparent;
