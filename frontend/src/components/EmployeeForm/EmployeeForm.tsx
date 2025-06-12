@@ -6,7 +6,7 @@ import { z } from "zod/v4";
 import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
-import type { RoleOption } from "../../types/types";
+import type { Role } from "../../types/types";
 import { useEffect, useState } from "react";
 import { getAllRoles } from "../../services/roleService";
 import { formatRole } from "../../utils/utils";
@@ -15,18 +15,21 @@ type EmployeeForm = z.infer<typeof employeeSchema>;
 
 type Props = {
   onFormSubmit: (data: EmployeeForm) => unknown;
+  defaultValues?: EmployeeForm;
 };
 
-const EmployeeForm = ({ onFormSubmit }: Props) => {
+const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<EmployeeForm>({
     resolver: zodResolver(employeeSchema),
+    defaultValues,
   });
 
-  const [roles, setRoles] = useState<RoleOption[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -34,12 +37,18 @@ const EmployeeForm = ({ onFormSubmit }: Props) => {
         const data = await getAllRoles();
         setRoles(data);
       } catch (e) {
-        console.error("Failed to fetch roles", e);
+        console.log("Failed to fetch roles", e);
       }
     };
 
     fetchRoles();
   }, []);
+
+  useEffect(() => {
+    if (roles.length && defaultValues) {
+      reset(defaultValues);
+    }
+  }, [roles, defaultValues, reset]);
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onFormSubmit)}>

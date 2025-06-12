@@ -7,26 +7,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 import { createContract } from "../../services/contractService";
+import type { Employee } from "../../types/types";
 
 type ContractForm = z.infer<typeof contractSchema>;
 
 type Props = {
   defaultValues?: ContractForm;
   readOnly?: boolean;
-  employeeId: number;
+  employee: Employee;
+  onSuccess?: () => void;
 };
 
-const ContractForm = ({ defaultValues, readOnly = false, employeeId }: Props) => {
+const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
+  const employeeId = employee.id;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ContractForm>({
     resolver: zodResolver(contractSchema),
-    defaultValues: {
-      employeeId,
-      ...defaultValues,
-    },
+    defaultValues,
   });
 
   const onSubmit = async (data: ContractForm) => {

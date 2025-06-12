@@ -1,14 +1,19 @@
 import classes from "./AllEmployeesPage.module.scss";
 import { useState, useEffect } from "react";
 import { deleteEmployee, getAllEmployees } from "../../services/employeeService";
-import type { Contract, Employee } from "../../types/types";
+import type { Employee } from "../../types/types";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard";
 import Banner from "../../components/Banner/Banner";
 import ContractModal from "../../components/ContractModal/ContractModal";
+import EmployeeModal from "../../components/EmployeeModal/EmployeeModal";
 
 const AllEmployeesPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [employeeContracts, setEmployeeContracts] = useState<Contract[]>([]);
+
+  const [contractModalEmployee, setContractModalEmployee] = useState<Employee | null>(
+    null
+  );
+  const [updateModalEmployee, setUpdateModalEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
     getAllEmployees()
@@ -31,15 +36,23 @@ const AllEmployeesPage = () => {
             key={employee.id}
             employee={employee}
             onSelect={() => handleDelete(employee.id)}
-            setEmployeeContract={setEmployeeContracts}
+            onViewContract={() => setContractModalEmployee(employee)}
+            onEdit={() => setUpdateModalEmployee(employee)}
           />
         ))}
       </div>
 
-      {employeeContracts.length > 0 && (
+      {contractModalEmployee && (
         <ContractModal
-          contracts={employeeContracts}
-          closeModal={() => setEmployeeContracts([])}
+          employee={contractModalEmployee}
+          closeModal={() => setContractModalEmployee(null)}
+        />
+      )}
+
+      {updateModalEmployee && (
+        <EmployeeModal
+          employee={updateModalEmployee}
+          closeModal={() => setUpdateModalEmployee(null)}
         />
       )}
     </div>

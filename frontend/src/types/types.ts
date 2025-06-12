@@ -1,19 +1,12 @@
 export type Department = {
+  departmentId: number;
   department: string;
 };
 
 export type Role = {
-  roleType: string;
-  department: Department;
-};
-
-export type RoleOption = {
   roleId: number;
   roleType: string;
-  department: {
-    departmentId: number;
-    department: string;
-  };
+  department: Department;
 };
 
 export type Contract = {

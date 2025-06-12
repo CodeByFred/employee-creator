@@ -22,11 +22,11 @@ public class CreateContractDTO {
     private LocalDate finishDate;
 
     @NotNull
-    private ContractEmploymentType employmentType;
+    private ContractEmploymentType contractEmploymentType;
 
     @NotNull
     @Min(0)
-    private Integer hours;
+    private Integer hoursPerWeek;
 
     @NotNull
     private Integer employeeId;

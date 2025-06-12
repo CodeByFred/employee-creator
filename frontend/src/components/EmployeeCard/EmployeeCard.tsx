@@ -2,17 +2,18 @@ import Button from "../Button/Button";
 import classes from "./EmployeeCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import type { Contract, Employee } from "../../types/types";
+import type { Employee } from "../../types/types";
 import { Link } from "react-router-dom";
 import { formatRole } from "../../utils/utils";
 
 type Props = {
   employee: Employee;
   onSelect: (id: number) => void | Promise<void>;
-  setEmployeeContract: (contracts: Contract[]) => void;
+  onViewContract: (employee: Employee) => void;
+  onEdit: (employee: Employee) => void;
 };
 
-const EmployeeCard = ({ employee, onSelect, setEmployeeContract }: Props) => {
+const EmployeeCard = ({ employee, onSelect, onViewContract, onEdit }: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -34,16 +35,11 @@ const EmployeeCard = ({ employee, onSelect, setEmployeeContract }: Props) => {
       </div>
 
       <div className={classes.buttons_container}>
-        <Link to={`/employees/edit/${employee.id}`} state={employee}>
-          <Button variant="update">Update</Button>
-        </Link>
+        <Button variant="update" onClick={() => onEdit(employee)}>
+          Update
+        </Button>
 
-        <Button
-          variant="contract"
-          onClick={() => {
-            setEmployeeContract(employee.contracts);
-          }}
-        >
+        <Button variant="contract" onClick={() => onViewContract(employee)}>
           View Contracts
         </Button>
 

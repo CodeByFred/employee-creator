@@ -41,8 +41,8 @@ public class ContractService {
         newContract.setContractType(data.getContractType());
         newContract.setStartDate(data.getStartDate());
         newContract.setFinishDate(data.getFinishDate());
-        newContract.setContractEmploymentType(data.getEmploymentType());
-        newContract.setHoursPerWeek(data.getHours());
+        newContract.setContractEmploymentType(data.getContractEmploymentType());
+        newContract.setHoursPerWeek(data.getHoursPerWeek());
         newContract.setEmployee(employee);
 
         Contract saved = this.contractRepository.save(newContract);

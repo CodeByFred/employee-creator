@@ -1,17 +1,21 @@
-import { useState } from "react";
 import classes from "./CreateEmployeePage.module.scss";
-import ContractForm from "../../components/ContractForm/ContractForm";
 import EmployeeForm from "../../components/EmployeeForm/EmployeeForm";
 import Banner from "../../components/Banner/Banner";
 import { createEmployee } from "../../services/employeeService";
+import { useState } from "react";
+import type { Employee } from "../../types/types";
+import ContractModal from "../../components/ContractModal/ContractModal";
+import { useNavigate } from "react-router-dom";
 
 const CreateEmployeePage = () => {
-  const [employeeId, setEmployeeId] = useState<number | null>(null);
+  const [createdEmployee, setCreatedEmployee] = useState<Employee | null>(null);
+
+  const navigate = useNavigate();
 
   const onFormSubmit = async (data: EmployeeForm) => {
     try {
-      const createdEmployee = await createEmployee(data);
-      setEmployeeId(createdEmployee.id);
+      const newEmployee = await createEmployee(data);
+      setCreatedEmployee(newEmployee);
     } catch (e) {
       console.log("Failed to create employee", e);
     }
@@ -22,7 +26,15 @@ const CreateEmployeePage = () => {
       <Banner />
       <div className={classes.forms}>
         <EmployeeForm onFormSubmit={onFormSubmit} />
-        {employeeId && <ContractForm employeeId={employeeId} />}
+        {createdEmployee && (
+          <ContractModal
+            employee={createdEmployee}
+            closeModal={() => {
+              setCreatedEmployee(null);
+              navigate("/employees");
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -30,3 +30,9 @@ export const createEmployee = async (data: EmployeeForm): Promise<Employee> => {
   const response = await axios.post<Employee>(EMPLOYEES_URL, data);
   return response.data;
 };
+
+export const updateEmployee = async (data: EmployeeForm, id: number) => {
+  console.log(data);
+  const response = await axios.patch(EMPLOYEES_URL + `/${id}`, data);
+  console.log(`Employee with id ${id} updated result is:`, response.data);
+};
