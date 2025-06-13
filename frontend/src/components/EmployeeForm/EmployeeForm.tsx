@@ -40,11 +40,9 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
 
   useEffect(() => {
     const fetchRoles = async () => {
-      try {
-        const data = await getAllRoles();
+      const data = await getAllRoles();
+      if (data) {
         setRoles(data);
-      } catch (e) {
-        console.log("Failed to fetch roles", e);
       }
     };
 

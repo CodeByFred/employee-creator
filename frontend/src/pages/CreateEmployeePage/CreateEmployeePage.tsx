@@ -13,11 +13,9 @@ const CreateEmployeePage = () => {
   const navigate = useNavigate();
 
   const onFormSubmit = async (data: EmployeeForm) => {
-    try {
-      const newEmployee = await createEmployee(data);
+    const newEmployee = await createEmployee(data);
+    if (newEmployee) {
       setCreatedEmployee(newEmployee);
-    } catch (e) {
-      console.log("Failed to create employee", e);
     }
   };
 

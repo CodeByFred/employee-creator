@@ -16,15 +16,20 @@ const AllEmployeesPage = () => {
   const [updateModalEmployee, setUpdateModalEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
-    getAllEmployees()
-      .then(setEmployees)
-      .catch((e) => console.log("Error loading employees", e));
+    const fetchEmployees = async () => {
+      const data = await getAllEmployees();
+      if (data) setEmployees(data);
+    };
+
+    fetchEmployees();
   }, []);
 
   const handleDelete = async (id: number) => {
-    await deleteEmployee(id);
+    const success = await deleteEmployee(id);
+    if (!success) return;
+
     const updated = await getAllEmployees();
-    setEmployees(updated);
+    if (updated) setEmployees(updated);
   };
 
   return (

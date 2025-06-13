@@ -1,7 +1,8 @@
 import classes from "./ContractModal.module.scss";
 import ContractForm from "../ContractForm/ContractForm";
 import type { Employee } from "../../types/types";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { getEmployeeById } from "../../services/employeeService";
 
 type Props = {
   employee: Employee;
@@ -9,12 +10,20 @@ type Props = {
 };
 
 const ContractModal = ({ employee, closeModal }: Props) => {
-  const hasContracts = Array.isArray(employee.contracts) && employee.contracts.length > 0;
+  const [employeeState, setEmployeeState] = useState(employee);
 
-  const navigate = useNavigate();
+  const refreshEmployee = async () => {
+    const updated = await getEmployeeById(employeeState.id);
+    if (updated) {
+      setEmployeeState(updated);
+    }
+  };
 
-  const handleContractCreated = () => {
-    navigate("/employees");
+  const hasContracts =
+    Array.isArray(employeeState.contracts) && employeeState.contracts.length > 0;
+
+  const handleContractCreated = async () => {
+    await refreshEmployee();
   };
 
   return (
@@ -25,14 +34,16 @@ const ContractModal = ({ employee, closeModal }: Props) => {
         </button>
         {hasContracts ? (
           <ContractForm
-            defaultValues={employee.contracts[0]}
-            employee={employee}
+            defaultValues={employeeState.contracts[0]}
+            employee={employeeState}
             readOnly
           />
         ) : (
           <>
-            <ContractForm employee={employee} onSuccess={handleContractCreated} />
-            <p>No contract found for this employee.</p>
+            <ContractForm employee={employeeState} onSuccess={handleContractCreated} />
+            <p>
+              No contract found for {employeeState.givenName} {employeeState.surname}
+            </p>
           </>
         )}
       </div>

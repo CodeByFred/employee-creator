@@ -23,7 +23,12 @@ type Props = {
   onSuccess?: () => void;
 };
 
-const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
+const ContractForm = ({
+  defaultValues,
+  readOnly = false,
+  employee,
+  onSuccess,
+}: Props) => {
   const employeeId = employee.id;
 
   const {
@@ -36,14 +41,13 @@ const ContractForm = ({ defaultValues, readOnly = false, employee }: Props) => {
   });
 
   const onSubmit = async (data: ContractForm) => {
-    try {
-      const contractWithEmployeeId = {
-        ...data,
-        employeeId,
-      };
-      await createContract(contractWithEmployeeId);
-    } catch (e) {
-      console.log("Failed to create contract:", e);
+    const contractWithEmployeeId = {
+      ...data,
+      employeeId,
+    };
+    const result = await createContract(contractWithEmployeeId);
+    if (result && onSuccess) {
+      onSuccess();
     }
   };
 

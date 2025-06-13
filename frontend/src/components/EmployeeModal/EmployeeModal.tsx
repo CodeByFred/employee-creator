@@ -2,6 +2,7 @@ import classes from "./EmployeeModal.module.scss";
 import type { Employee } from "../../types/types";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
 import { updateEmployee } from "../../services/employeeService";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   employee: Employee;
@@ -9,6 +10,8 @@ type Props = {
 };
 
 const EmployeeModal = ({ employee, closeModal }: Props) => {
+  const navigate = useNavigate();
+
   const mapEmployeeToForm = (employee: Employee): EmployeeForm => ({
     givenName: employee.givenName,
     surname: employee.surname,
@@ -19,10 +22,9 @@ const EmployeeModal = ({ employee, closeModal }: Props) => {
   });
 
   const onFormSubmit = async (data: EmployeeForm) => {
-    try {
-      updateEmployee(data, employee.id);
-    } catch (e) {
-      console.log("Failed to update employee", e);
+    const result = await updateEmployee(data, employee.id);
+    if (result !== undefined) {
+      navigate("/employees");
     }
   };
 
