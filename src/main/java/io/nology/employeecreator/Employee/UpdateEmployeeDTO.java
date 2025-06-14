@@ -1,8 +1,6 @@
 package io.nology.employeecreator.employee;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,10 +8,10 @@ import lombok.Setter;
 @Setter
 public class UpdateEmployeeDTO {
 
-    @Pattern(regexp = ".*\\S.*", message = "Given name cannot be empty")
+    @NotBlank(message = "Field cannot be blank")
     private String givenName;
 
-    @Pattern(regexp = ".*\\S.*", message = "Surname cannot be empty")
+    @NotBlank(message = "Field cannot be blank")
     private String surname;
 
     @Email(message = "Invalid email format")

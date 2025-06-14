@@ -2,11 +2,12 @@ package io.nology.employeecreator.contract;
 
 import io.nology.employeecreator.employee.Employee;
 import io.nology.employeecreator.employee.EmployeeRepository;
+import io.nology.employeecreator.exceptions.NotFoundException;
+import io.nology.employeecreator.exceptions.ServiceValidationException;
+import io.nology.employeecreator.exceptions.ValidationErrors;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,18 +24,21 @@ public class ContractService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Contract create(@Valid CreateContractDTO data) {
+    public Contract create(@Valid CreateContractDTO data) throws ServiceValidationException, NotFoundException {
 
         Employee employee = employeeRepository.findById(data.getEmployeeId()).orElseThrow(() -> {
             log.warn("Employee {} not found", data.getEmployeeId());
-            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee " + data.getEmployeeId() + " does not exist");
+            return new NotFoundException("Employee " + data.getEmployeeId() + " does not exist");
         });
 
         boolean hasActive = contractRepository.findByEmployeeId(employee.getId()).stream().anyMatch(Contract::isActive);
 
         if (hasActive) {
             log.warn("Employee {} already has an active contract", employee.getId());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employee already has an active contract");
+
+            ValidationErrors validationErrors = new ValidationErrors();
+            validationErrors.add(String.valueOf(employee.getId()), "Employee already has an active contract");
+            throw new ServiceValidationException(validationErrors);
         }
 
         Contract newContract = new Contract();

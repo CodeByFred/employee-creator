@@ -1,4 +1,4 @@
-import api from "./axiosSetup";
+import api, { type APIErrorResponse } from "./axiosSetup";
 import type { Employee } from "../types/types";
 import EmployeeForm from "../components/EmployeeForm/EmployeeForm";
 import { EMPLOYEES_URL } from "./urls";
@@ -47,21 +47,45 @@ export const deleteEmployee = async (id: number): Promise<boolean> => {
 export const createEmployee = async (
   data: EmployeeForm
 ): Promise<Employee | undefined> => {
-  try {
-    const response = await api.post<Employee>(EMPLOYEES_URL, data);
+  console.log("Submitting employee:", data);
+
+  const response = await api.post<APIErrorResponse>(EMPLOYEES_URL, data, {
+    validateStatus: () => true,
+  });
+
+  if (response.status === 201) {
     toast.success("Employee created successfully");
-    return response.data;
-  } catch {
-    toast.error("Failed to create employee");
-    return undefined;
+    return response.data as Employee;
   }
+
+  const errors = response.data?.errors;
+  if (errors && Object.keys(errors).length > 0) {
+    Object.values(errors).forEach((messages) => {
+      messages.forEach((msg) => toast.error(msg));
+    });
+  } else {
+    toast.error("Request failed");
+  }
+
+  return undefined;
 };
 
 export const updateEmployee = async (data: EmployeeForm, id: number): Promise<void> => {
-  try {
-    await api.patch(EMPLOYEES_URL + `/${id}`, data);
+  const response = await api.patch<APIErrorResponse>(`${EMPLOYEES_URL}/${id}`, data, {
+    validateStatus: () => true,
+  });
+
+  if (response.status === 200) {
     toast.success("Employee updated successfully");
-  } catch {
-    toast.error("Failed to update employee");
+    return;
+  }
+
+  const errors = response.data?.errors;
+  if (errors && Object.keys(errors).length > 0) {
+    Object.values(errors).forEach((messages) => {
+      messages.forEach((msg) => toast.error(msg));
+    });
+  } else {
+    toast.error("Request failed");
   }
 };

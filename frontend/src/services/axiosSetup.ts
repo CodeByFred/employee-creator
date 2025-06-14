@@ -1,6 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+export type APIErrorResponse = {
+  message?: string;
+  errors?: Record<string, string[]>;
+};
+
 export const api = axios.create({
   baseURL: "http://localhost:8080",
 });

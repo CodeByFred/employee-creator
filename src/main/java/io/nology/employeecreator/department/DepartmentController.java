@@ -1,5 +1,6 @@
 package io.nology.employeecreator.department;
 
+import io.nology.employeecreator.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) {
+    public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) throws NotFoundException {
         log.debug("GET /departments/id - Fetching department with id {}", id);
         Optional<Department> foundDepartment = this.departmentService.findById(id);
         if (foundDepartment.isPresent()) {
@@ -38,6 +38,6 @@ public class DepartmentController {
             return ResponseEntity.ok(foundDepartment.get());
         }
         log.warn("Department {} not found", id);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department " + id + " does not exist");
+        throw new NotFoundException("Department " + id + " does not exist");
     }
 }

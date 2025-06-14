@@ -1,11 +1,12 @@
 package io.nology.employeecreator.contract;
 
+import io.nology.employeecreator.exceptions.NotFoundException;
+import io.nology.employeecreator.exceptions.ServiceValidationException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class ContractController {
     }
 
     @PostMapping
-    public ResponseEntity<Contract> createContract(@Valid @RequestBody CreateContractDTO data) {
+    public ResponseEntity<Contract> createContract(@Valid @RequestBody CreateContractDTO data) throws ServiceValidationException, NotFoundException {
         log.info("POST /contracts - Creating contract for employee id {}", data.getEmployeeId());
         Contract saved = this.contractService.create(data);
         log.info("Contract created with id {}", saved.getId());
@@ -36,7 +37,7 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contract> getById(@PathVariable Integer id) {
+    public ResponseEntity<Contract> getById(@PathVariable Integer id) throws NotFoundException {
         log.debug("GET /contracts/id - Fetching contract with id {}", id);
         Optional<Contract> foundContract = this.contractService.findById(id);
         if (foundContract.isPresent()) {
@@ -44,6 +45,6 @@ public class ContractController {
             return ResponseEntity.ok(foundContract.get());
         }
         log.warn("Contract {} not found", id);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Contract " + id + " does not exist");
+        throw new NotFoundException("Contract " + id + " does not exist");
     }
 }

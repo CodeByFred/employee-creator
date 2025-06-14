@@ -1,15 +1,24 @@
 import { toast } from "react-toastify";
-import api from "./axiosSetup";
+import api, { type APIErrorResponse } from "./axiosSetup";
 import { CONTRACTS_URL } from "./urls";
 import type ContractForm from "../components/ContractForm/ContractForm";
 
 export const createContract = async (data: ContractForm & { employeeId: number }) => {
-  try {
-    const response = await api.post(CONTRACTS_URL, data);
+  const response = await api.post<APIErrorResponse>(CONTRACTS_URL, data, {
+    validateStatus: () => true,
+  });
+
+  if (response.status === 201) {
     toast.success("Contract created successfully");
     return response.data;
-  } catch {
-    toast.error("Failed to create contract");
-    return undefined;
+  }
+
+  const errors = response.data?.errors;
+  if (errors && Object.keys(errors).length > 0) {
+    Object.values(errors).forEach((messages) => {
+      messages.forEach((msg) => toast.error(msg));
+    });
+  } else {
+    toast.error("Request failed");
   }
 };

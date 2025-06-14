@@ -1,9 +1,6 @@
 package io.nology.employeecreator.contract;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -30,4 +27,12 @@ public class CreateContractDTO {
 
     @NotNull
     private Integer employeeId;
+
+    @AssertTrue(message = "Finish date must be after start date")
+    public boolean isValidDateRange() {
+        if (startDate == null || finishDate == null) {
+            return true;
+        }
+        return finishDate.isAfter(startDate);
+    }
 }
