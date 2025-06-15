@@ -1,18 +1,59 @@
-# Employee Creator – Backend
+[Frontend README](./frontend/README.md)
 
-The backend is a Spring Boot application that manages employee data, roles, departments, and contracts. It exposes a REST API that communicates with the frontend of the Employee Creator. The backend supports full CRUD functionally on an Employee.
+# Employee Creator – Full Stack Application
+
+Employee Creator is a full-stack web application designed to manage employee data, departments, roles, and contracts. The two layers support full CRUD operations and provide a modular, maintainable architecture.
+
+- The **backend** is a Spring Boot application that exposes a RESTful API and handles business logic, validation, and data persistence.
+
+---
+
+## Backend Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [To Run Locally](#to-run-locally)
+- [Database Seeding](#database-seeding)
+- [Error Handling](#error-handling)
+- [Testing](#testing)
+- [Security Considerations](#security-considerations)
+- [Resources](#resources)
+
+---
+
+## Features
+
+- Modular service structure per feature
+- DTO separation for request/response logic
+- Global exception handling with meaningful JSON responses
+- CORS config for frontend/backend integration
+- Database seeding with semi-realistic data using DataFaker
+- Application logging (via SLF4J) for tracking requests, errors, and system behavior
 
 ---
 
 ## Tech Stack
 
+#### Backend
+
 - Java 21
 - Spring Boot 3.5
 - Spring Data JPA
+- Hibernate
 - MySQL
 - Maven
-- Hibernate
-- Java Faker (for optional DB seeding)
+- Lombok
+- Slf4j
+- DataFaker (optional DB seeding)
+
+#### Dev Tools
+
+- IntelliJ Ultimate
+- Postman
+- GitKraken
+- Git Bash
 
 ---
 
@@ -21,41 +62,47 @@ The backend is a Spring Boot application that manages employee data, roles, depa
 ```
 src/
 └── main/
-    └── java/
-        └── io/
-            └── nology/
-                └── employeecreator/
-                    ├── config/
-                    │   └── CorsConfig.java
-                    ├── contract/
-                    │   ├── Contract.java
-                    │   ├── ContractController.java
-                    │   ├── ContractEmploymentType.java
-                    │   ├── ContractRepository.java
-                    │   ├── ContractService.java
-                    │   ├── ContractType.java
-                    │   └── CreateContractDTO.java
-                    ├── department/
-                    │   ├── Department.java
-                    │   ├── DepartmentController.java
-                    │   ├── DepartmentRepository.java
-                    │   ├── DepartmentService.java
-                    │   └── DepartmentType.java
-                    ├── employee/
-                    │   ├── CreateEmployeeDTO.java
-                    │   ├── Employee.java
-                    │   ├── EmployeeController.java
-                    │   ├── EmployeeRepository.java
-                    │   ├── EmployeeService.java
-                    │   └── UpdateEmployeeDTO.java
-                    ├── role/
-                    │   ├── Role.java
-                    │   ├── RoleController.java
-                    │   ├── RoleRepository.java
-                    │   ├── RoleService.java
-                    │   └── RoleType.java
-                    └── EmployeeCreatorApplication.java
-resources/
+├── java/
+│ └── io/
+│ └── nology/
+│ └── employeecreator/
+│ ├── config/
+│ │ └── CorsConfig.java
+│ ├── contract/
+│ │ ├── Contract.java
+│ │ ├── ContractController.java
+│ │ ├── ContractEmploymentType.java
+│ │ ├── ContractRepository.java
+│ │ ├── ContractService.java
+│ │ ├── ContractType.java
+│ │ └── CreateContractDTO.java
+│ ├── department/
+│ │ ├── Department.java
+│ │ ├── DepartmentController.java
+│ │ ├── DepartmentRepository.java
+│ │ ├── DepartmentService.java
+│ │ └── DepartmentType.java
+│ ├── employee/
+│ │ ├── CreateEmployeeDTO.java
+│ │ ├── Employee.java
+│ │ ├── EmployeeController.java
+│ │ ├── EmployeeRepository.java
+│ │ ├── EmployeeService.java
+│ │ └── UpdateEmployeeDTO.java
+│ ├── exceptions/
+│ │ ├── GlobalExceptionHandler.java
+│ │ ├── NotFoundException.java
+│ │ ├── ServiceValidationException.java
+│ │ ├── UpdateFailureException.java
+│ │ └── ValidationErrors.java
+│ ├── role/
+│ │ ├── Role.java
+│ │ ├── RoleController.java
+│ │ ├── RoleRepository.java
+│ │ ├── RoleService.java
+│ │ └── RoleType.java
+│ └── EmployeeCreatorApplication.java
+└── resources/
 ├── static/
 ├── templates/
 └── application.properties
@@ -65,7 +112,7 @@ target/
 
 ---
 
-## API Endpoints Overview
+## API Endpoints
 
 | Resource    | Method | Endpoint                         | Description                        |
 | ----------- | ------ | -------------------------------- | ---------------------------------- |
@@ -83,7 +130,7 @@ target/
 
 ---
 
-## Running Locally
+## To Run Locally
 
 ### Prerequisites
 
@@ -91,45 +138,74 @@ target/
 - Maven
 - MySQL server
 
-### 1. Clone the repository
+#### 1. Clone the repository
 
-```bash
+```
 git clone https://github.com/CodeByFred/employee-creator.git
 ```
 
-### 2. Configure `application.properties`
+#### 2. Configure `application.properties`
 
-Either create a `.env` file or update `src/main/resources/application.properties`:
+Either create a `.env` file or use `src/main/resources/application.properties` default settings:
 
 ```properties
 spring.application.name=employee-creator
-spring.datasource.url=jdbc:mysql://localhost:3306/company
-spring.datasource.username=root
-spring.datasource.password=password
+spring.datasource.url=jdbc:mysql://localhost:3306/teamtracker
+spring.datasource.username=<YOUR DB USERNAME>
+spring.datasource.password=<YOUR DB PASSWORD>
 spring.jpa.properties.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.properties.hibernate.format_sql=true
+
+# only for development
 logging.file.name=logs/app.log
 logging.level.io.nology=DEBUG
 logging.level.root=WARN
+spring.jpa.show-sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=update
+spring.profiles.active=dev
+spring.sql.init.mode=always
 ```
 
-### 3. Run the application
+#### 3. Run the application
 
-```bash
+```
 ./mvnw spring-boot:run
 ```
 
 ---
 
-## Seeding the Database
+## Database Seeding
 
-It runs automatically on startup **only if the `company` database does not exist**.
+Runs automatically on startup **ONLY if the `teamtracker` database exists in your MySQL AND the database is unseeded**.
 
 ---
 
 ## Error Handling
 
-Errors are currently thrown as a ResponseStatusException with the revelant status code.
+The backend uses a centralized exception handling approach via a `@ControllerAdvice` class (`GlobalExceptionHandler`). Instead of directly throwing `ResponseStatusException`, the application defines custom exceptions to handle specific error cases cleanly and consistently.
+
+#### Custom Exceptions
+
+- `NotFoundException`: Thrown when a requested resource (e.g. employee, department) is not found.
+- `ServiceValidationException`: Used to encapsulate multiple validation errors in a request.
+- `UpdateFailureException`: Indicates a failure when trying to update an existing resource.
+- `ValidationErrors`: A helper class used to structure and return multiple field-level validation messages.
+
+#### Exception Mapping
+
+All exceptions are caught and translated into appropriate HTTP responses:
+
+- `NotFoundException` -> `404 NOT FOUND`
+- `ServiceValidationException` -> `400 BAD REQUEST` with structured validation errors
+- `UpdateFailureException` -> `400 BAD REQUEST`
+
+---
+
+## Testing
+
+- Unit testing _(planned)_
+- Integration testing _(planned)_
 
 ---
 
