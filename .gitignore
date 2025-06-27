@@ -67,3 +67,6 @@ lerna-debug.log*
 
 ### Misc ###
 HELP.md
+
+# Local Netlify folder
+.netlify

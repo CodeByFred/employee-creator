@@ -1,10 +1,7 @@
 package io.nology.employeecreator.employee;
 
-import io.nology.employeecreator.exceptions.NotFoundException;
 import io.nology.employeecreator.exceptions.ServiceValidationException;
 import io.nology.employeecreator.exceptions.ValidationErrors;
-import io.nology.employeecreator.role.Role;
-import io.nology.employeecreator.role.RoleRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,25 +14,13 @@ import java.util.Optional;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final RoleRepository roleRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.roleRepository = roleRepository;
     }
 
-    private void logRoleNotFound(Integer id) {
-        log.warn("Role id {} does not exist", id);
-    }
+    public Employee create(@Valid CreateEmployeeDTO data) throws ServiceValidationException {
 
-    public Employee create(@Valid CreateEmployeeDTO data) throws NotFoundException, ServiceValidationException {
-        log.info("Fetching role to create for employee");
-        Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> {
-            logRoleNotFound(data.getRoleId());
-            return new NotFoundException("Role " + data.getRoleId() + " does not exist");
-        });
-
-        log.info("Role id {} found. Creating new employee", data.getRoleId());
         Employee newEmployee = new Employee();
         newEmployee.setGivenName(data.getGivenName().trim());
         newEmployee.setSurname(data.getSurname().trim());
@@ -57,7 +42,6 @@ public class EmployeeService {
             throw new ServiceValidationException(errors);
         }
         newEmployee.setAddress(data.getAddress().trim());
-        newEmployee.setRole(role);
 
         Employee saved = this.employeeRepository.save(newEmployee);
         log.info("Created employee id {} with role id {}", saved.getId(), data.getRoleId());
@@ -74,7 +58,7 @@ public class EmployeeService {
         return this.employeeRepository.findById(id);
     }
 
-    public Optional<Employee> updateById(Integer id, UpdateEmployeeDTO data) throws NotFoundException, ServiceValidationException {
+    public Optional<Employee> updateById(Integer id, UpdateEmployeeDTO data) throws  ServiceValidationException {
 
 
         Optional<Employee> foundEmployee = this.findById(id);
@@ -92,8 +76,7 @@ public class EmployeeService {
                         (data.getSurname() == null || data.getSurname().trim().equals(employeeFromDB.getSurname())) &&
                         (data.getEmail() == null || data.getEmail().trim().equalsIgnoreCase(employeeFromDB.getEmail())) &&
                         (data.getPhone() == null || data.getPhone().trim().equals(employeeFromDB.getPhone())) &&
-                        (data.getAddress() == null || data.getAddress().trim().equals(employeeFromDB.getAddress())) &&
-                        (data.getRoleId() == null || data.getRoleId().equals(employeeFromDB.getRole().getRoleId()));
+                        (data.getAddress() == null || data.getAddress().trim().equals(employeeFromDB.getAddress()));
 
         if (noChanges) {
             errors.add("employee", "No changes detected");
@@ -128,14 +111,6 @@ public class EmployeeService {
 
         if (data.getAddress() != null) {
             employeeFromDB.setAddress(data.getAddress().trim());
-        }
-
-        if (data.getRoleId() != null) {
-            Role role = roleRepository.findById(data.getRoleId()).orElseThrow(() -> {
-                logRoleNotFound(data.getRoleId());
-                return new NotFoundException("Role " + data.getRoleId() + " does not exist");
-            });
-            employeeFromDB.setRole(role);
         }
 
         this.employeeRepository.save(employeeFromDB);

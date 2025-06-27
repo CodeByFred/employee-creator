@@ -20,33 +20,21 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @Enumerated(EnumType.STRING)
     private ContractType contractType;
 
-
     private LocalDate startDate;
 
-
     private LocalDate finishDate;
-
 
     @Enumerated(EnumType.STRING)
     private ContractEmploymentType contractEmploymentType;
 
-
     private Integer hoursPerWeek;
-
 
     private LocalDateTime createdAt;
 
-
     private LocalDateTime updatedAt;
-
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
 
     @PrePersist
     public void onCreate() {

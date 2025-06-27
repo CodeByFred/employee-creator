@@ -21,8 +21,4 @@ public class CreateEmployeeDTO {
 
     @NotBlank
     private String address;
-
-    @NotNull
-    @Min(0)
-    private Integer roleId;
 }

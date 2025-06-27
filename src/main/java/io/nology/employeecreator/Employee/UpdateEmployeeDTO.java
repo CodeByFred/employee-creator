@@ -22,7 +22,4 @@ public class UpdateEmployeeDTO {
 
     @Pattern(regexp = ".*\\S.*", message = "Address cannot be empty")
     private String address;
-
-    @Min(0)
-    private Integer roleId;
 }

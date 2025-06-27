@@ -28,7 +28,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody CreateEmployeeDTO data) throws NotFoundException, ServiceValidationException {
+    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody CreateEmployeeDTO data) throws ServiceValidationException {
         log.info("POST /employees - Creating employee");
         Employee saved = this.employeeService.create(data);
         log.info("Successfully created employee id {}", saved);
