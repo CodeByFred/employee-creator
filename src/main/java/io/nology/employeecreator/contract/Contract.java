@@ -1,8 +1,6 @@
 package io.nology.employeecreator.contract;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.nology.employeecreator.employee.Employee;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "contracts", uniqueConstraints = {@UniqueConstraint(columnNames = {"employee_id", "start_date"})})
+@Table(name = "contracts")
 public class Contract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private ContractType contractType;

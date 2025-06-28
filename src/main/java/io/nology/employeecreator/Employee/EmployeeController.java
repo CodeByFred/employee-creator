@@ -23,7 +23,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    private void logEmployeeNotFound(Integer id) {
+    private void logEmployeeNotFound(Long id) {
         log.warn("Employee id {} does not exist", id);
     }
 
@@ -42,7 +42,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<Employee> getById(@PathVariable Long id) throws NotFoundException {
         log.debug("GET /employees/id - Fetching employee id {}", id);
         Optional<Employee> foundEmployee = this.employeeService.findById(id);
         if (foundEmployee.isPresent()) {
@@ -55,7 +55,7 @@ public class EmployeeController {
 
     // Typically will be a partial update (some null fields) but @Valid is still useful in this context
     @PatchMapping("/{id}")
-    public ResponseEntity<Employee> updateById(@PathVariable Integer id, @Valid @RequestBody UpdateEmployeeDTO data) throws NotFoundException, ServiceValidationException {
+    public ResponseEntity<Employee> updateById(@PathVariable Long id, @Valid @RequestBody UpdateEmployeeDTO data) throws NotFoundException, ServiceValidationException {
         log.info("PATCH /employees/id - Updating employee id {}", id);
         Optional<Employee> result = this.employeeService.updateById(id, data);
         Employee updated = result.orElseThrow(() -> {
@@ -67,7 +67,7 @@ public class EmployeeController {
 
     // Setting isActive to soft delete or re-activate an employee
     @PutMapping("/{id}/toggleIsActive")
-    public ResponseEntity<Employee> toggleActive(@PathVariable Integer id) throws UpdateFailureException, NotFoundException {
+    public ResponseEntity<Employee> toggleActive(@PathVariable Long id) throws UpdateFailureException, NotFoundException {
         log.info("PUT /employees/id/toggle-active - Toggling employee id {} isActive", id);
         Employee employee = this.employeeService.findById(id)
                 .orElseThrow(() -> {logEmployeeNotFound(id); return new NotFoundException("Could not update Employee " + id + " that employee does not exist");});
@@ -83,7 +83,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) throws NotFoundException {
         log.info("DELETE /employees/id - Deleting employee id {}", id);
         if (this.employeeService.deleteById(id)) {
             log.info("Employee id {} has been deleted", id);

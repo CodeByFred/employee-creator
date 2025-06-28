@@ -24,7 +24,7 @@ public class ContractController {
 
     @PostMapping
     public ResponseEntity<Contract> createContract(@Valid @RequestBody CreateContractDTO data) throws ServiceValidationException, NotFoundException {
-        log.info("POST /contracts - Creating contract for employee id {}", data.getEmployeeId());
+        log.info("POST /contracts - Creating contract");
         Contract saved = this.contractService.create(data);
         log.info("Contract created with id {}", saved.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -37,7 +37,7 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contract> getById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<Contract> getById(@PathVariable Long id) throws NotFoundException {
         log.debug("GET /contracts/id - Fetching contract with id {}", id);
         Optional<Contract> foundContract = this.contractService.findById(id);
         if (foundContract.isPresent()) {
@@ -47,4 +47,13 @@ public class ContractController {
         log.warn("Contract {} not found", id);
         throw new NotFoundException("Contract " + id + " does not exist");
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Contract>  updateContract(@PathVariable Long id, @Valid @RequestBody UpdateContractDTO data) throws NotFoundException, ServiceValidationException {
+        log.debug("PATCH /contracts/id - Updating contract with id {}", id);
+        Contract updatedContract = this.contractService.updateById(id, data);
+        log.info("Contract updated with id {}", updatedContract.getId());
+        return ResponseEntity.ok(updatedContract);
+    }
+
 }

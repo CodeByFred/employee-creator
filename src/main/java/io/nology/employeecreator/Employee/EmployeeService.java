@@ -44,7 +44,7 @@ public class EmployeeService {
         newEmployee.setAddress(data.getAddress().trim());
 
         Employee saved = this.employeeRepository.save(newEmployee);
-        log.info("Created employee id {} with role id {}", saved.getId(), data.getRoleId());
+        log.info("Employee created: {}", saved);
         return saved;
     }
 
@@ -53,12 +53,12 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
     }
 
-    public Optional<Employee> findById(Integer id) {
+    public Optional<Employee> findById(Long id) {
         log.debug("Fetching employee id {}", id);
         return this.employeeRepository.findById(id);
     }
 
-    public Optional<Employee> updateById(Integer id, UpdateEmployeeDTO data) throws  ServiceValidationException {
+    public Optional<Employee> updateById(Long id, UpdateEmployeeDTO data) throws  ServiceValidationException {
 
 
         Optional<Employee> foundEmployee = this.findById(id);
@@ -125,7 +125,7 @@ public class EmployeeService {
         return true;
     }
 
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
         Optional<Employee> foundEmployee = this.findById(id);
         if (foundEmployee.isEmpty()) {
             return false;

@@ -21,7 +21,7 @@ public class DepartmentService {
         return this.departmentRepository.findAll();
     }
 
-    public Optional<Department> findById(Integer id) {
+    public Optional<Department> findById(Long id) {
         log.debug("Fetching department by id {}", id);
         return this.departmentRepository.findById(id);
     }

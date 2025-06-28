@@ -30,7 +30,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) throws NotFoundException {
         log.debug("GET /departments/id - Fetching department with id {}", id);
         Optional<Department> foundDepartment = this.departmentService.findById(id);
         if (foundDepartment.isPresent()) {

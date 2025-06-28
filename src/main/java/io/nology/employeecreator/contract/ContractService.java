@@ -1,7 +1,5 @@
 package io.nology.employeecreator.contract;
 
-import io.nology.employeecreator.employee.Employee;
-import io.nology.employeecreator.employee.EmployeeRepository;
 import io.nology.employeecreator.exceptions.NotFoundException;
 import io.nology.employeecreator.exceptions.ServiceValidationException;
 import io.nology.employeecreator.exceptions.ValidationErrors;
@@ -17,40 +15,21 @@ import java.util.Optional;
 public class ContractService {
 
     private final ContractRepository contractRepository;
-    private final EmployeeRepository employeeRepository;
 
-    public ContractService(ContractRepository contractRepository, EmployeeRepository employeeRepository) {
+    public ContractService(ContractRepository contractRepository) {
         this.contractRepository = contractRepository;
-        this.employeeRepository = employeeRepository;
     }
 
     public Contract create(@Valid CreateContractDTO data) throws ServiceValidationException, NotFoundException {
-
-        Employee employee = employeeRepository.findById(data.getEmployeeId()).orElseThrow(() -> {
-            log.warn("Employee {} not found", data.getEmployeeId());
-            return new NotFoundException("Employee " + data.getEmployeeId() + " does not exist");
-        });
-
-        boolean hasActive = contractRepository.findByEmployeeId(employee.getId()).stream().anyMatch(Contract::isActive);
-
-        if (hasActive) {
-            log.warn("Employee {} already has an active contract", employee.getId());
-
-            ValidationErrors validationErrors = new ValidationErrors();
-            validationErrors.add(String.valueOf(employee.getId()), "Employee already has an active contract");
-            throw new ServiceValidationException(validationErrors);
-        }
-
         Contract newContract = new Contract();
         newContract.setContractType(data.getContractType());
         newContract.setStartDate(data.getStartDate());
         newContract.setFinishDate(data.getFinishDate());
         newContract.setContractEmploymentType(data.getContractEmploymentType());
         newContract.setHoursPerWeek(data.getHoursPerWeek());
-        newContract.setEmployee(employee);
 
         Contract saved = this.contractRepository.save(newContract);
-        log.info("Created contract {} for employee {}", saved.getId(), employee.getId());
+        log.info("Created contract id {}", saved.getId());
         return saved;
     }
 
@@ -59,8 +38,34 @@ public class ContractService {
         return this.contractRepository.findAll();
     }
 
-    public Optional<Contract> findById(Integer id) {
+    public Optional<Contract> findById(Long id) {
         log.debug("Fetching contract by id {}", id);
         return this.contractRepository.findById(id);
+    }
+
+    public Contract updateById(Long id, @Valid UpdateContractDTO data) throws ServiceValidationException, NotFoundException {
+
+        Optional<Contract> foundContract = contractRepository.findById(id);
+        if(foundContract.isEmpty()) {
+            log.warn("No contract found with id {}", id);
+            throw new NotFoundException("No contract found with id " + id);
+        }
+
+        Contract contractFromDB = foundContract.get();
+
+        ValidationErrors errors = new ValidationErrors();
+
+        boolean noChanges = (data.getFinishDate() == null || data.getFinishDate().isAfter(contractFromDB.getFinishDate()));
+
+        if(noChanges) {
+            errors.add("contract", "No changes were made to end date");
+            throw new ServiceValidationException(errors);
+        }
+
+        contractFromDB.setFinishDate(data.getFinishDate());
+
+        contractRepository.save(contractFromDB);
+        log.info("Updated contract with id {}", contractFromDB.getId());
+        return contractFromDB;
     }
 }

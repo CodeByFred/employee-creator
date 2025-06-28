@@ -7,6 +7,9 @@ import io.nology.employeecreator.contract.ContractType;
 import io.nology.employeecreator.department.DepartmentRepository;
 import io.nology.employeecreator.employee.Employee;
 import io.nology.employeecreator.employee.EmployeeRepository;
+import io.nology.employeecreator.employeerole.EmployeeRole;
+import io.nology.employeecreator.employeerole.EmployeeRoleRepository;
+import io.nology.employeecreator.employeerole.PromotionType;
 import io.nology.employeecreator.role.Role;
 import io.nology.employeecreator.role.RoleRepository;
 import net.datafaker.Faker;
@@ -18,10 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -33,15 +33,16 @@ public class DataSeeder implements CommandLineRunner {
     private final DepartmentRepository departmentRepository;
     private final RoleRepository roleRepository;
     private final Faker faker = new Faker();
+    private final EmployeeRoleRepository employeeRoleRepository;
     private final JdbcTemplate jdbcTemplate;
 
 
-
-    DataSeeder(ContractRepository contractRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, RoleRepository roleRepository, JdbcTemplate jdbcTemplate) {
+    DataSeeder(ContractRepository contractRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, RoleRepository roleRepository, EmployeeRoleRepository employeeRoleRepository ,JdbcTemplate jdbcTemplate) {
         this.contractRepository = contractRepository;
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.roleRepository = roleRepository;
+        this.employeeRoleRepository = employeeRoleRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -52,6 +53,7 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println("How many roles? " + roleRepository.count());
         System.out.println("How many employees? " + employeeRepository.count());
         System.out.println("How many contracts? " + contractRepository.count());
+        System.out.println("How many employee roles? " + employeeRoleRepository.count());
 
 
 
@@ -101,7 +103,7 @@ public class DataSeeder implements CommandLineRunner {
         """);
         }
 
-        if (employeeRepository.count() == 0) {
+        if (employeeRepository.count() < 150) {
 
             Set<String> emails = new HashSet<>();
             Set<String> phoneNumbers = new HashSet<>();
@@ -116,8 +118,8 @@ public class DataSeeder implements CommandLineRunner {
 
                 String street = faker.address().streetAddress();
                 String city = faker.australia().locations();
-                String state = faker.australia().states();
-                String auPostcode = String.valueOf(2000 + faker.random().nextInt(6000));
+                String state =  getStateForCity(city);  // faker.australia().states();
+                String auPostcode = getRandomPostcodeForState(state);
 
                 String address = street + " " + city + " "  + state + " " + auPostcode;
 
@@ -136,7 +138,6 @@ public class DataSeeder implements CommandLineRunner {
                 employee.setEmail(email);
                 employee.setPhone(auMobile);
                 employee.setAddress(address);
-                employee.setRole(role);
 
                 ContractType contractType = faker.options().option(ContractType.class);
 
@@ -157,22 +158,80 @@ public class DataSeeder implements CommandLineRunner {
 
 
                 ContractEmploymentType employmentType = faker.options().option(ContractEmploymentType.class);
-                Integer hours = faker.number().numberBetween(1, 38);
-
+                int hours = faker.number().numberBetween(1, 38);
 
                 Contract contract = new Contract();
                 contract.setContractType(contractType);
                 contract.setStartDate(startDate);
-                contract.setFinishDate(endDate);
+
+                if(contract.getContractType().equals(ContractType.PERMANENT)) {
+                    contract.setFinishDate(null);
+                } else {
+                    contract.setFinishDate(endDate);
+                }
                 contract.setContractEmploymentType(employmentType);
-                contract.setHoursPerWeek(hours);
-                contract.setEmployee(employee);
+                if(contract.getContractEmploymentType().equals(ContractEmploymentType.FULL_TIME)) {
+                    contract.setHoursPerWeek(38);
+                } else {
+                    contract.setHoursPerWeek(hours);
+                }
 
                 emails.add(email);
                 phoneNumbers.add(auMobile);
                 this.employeeRepository.save(employee);
                 this.contractRepository.save(contract);
+
+                EmployeeRole employeeRole = new EmployeeRole();
+                employeeRole.setEmployee(employee);
+                employeeRole.setContract(contract);
+                employeeRole.setRole(role);
+                employeeRole.setPriorYearsOfExperience(faker.number().numberBetween(1,30));
+                employeeRole.setPromotionType(faker.options().option(PromotionType.class));
+                employeeRole.setPerformanceRating(faker.number().numberBetween(1,5));
+                this.employeeRoleRepository.save(employeeRole);
             }
         }
+    }
+
+    public String getStateForCity(String city) {
+        return switch (city) {
+            case "Sydney", "Newcastle", "Central Coast", "Wollongong", "Lightning Ridge", "Huskisson", "Jervis Bay",
+                 "Coffs Harbour", "Wagga Wagga", "Mildura – Wentworth", "Port Macquarie", "Tamworth", "Orange",
+                 "Bowral – Mittagong", "Dubbo", "Nowra – Bomaderry", "Bathurst", "Lismore", "Nelson Bay" -> "NSW";
+            case "Melbourne", "Geelong", "Ballarat", "Bendigo", "Albury", "Melton", "Shepparton – Mooroopna",
+                 "Traralgon – Morwell", "Warragul – Drouin", "Warrnambool" -> "VIC";
+            case "Brisbane", "Gold Coast", "Sunshine Coast", "Townsville", "Cairns", "Toowoomba", "Mackay",
+                 "Rockhampton", "Bundaberg", "Hervey Bay", "Gladstone – Tannum Sands" -> "QLD";
+            case "Perth", "Bunbury", "Busselton", "Geraldton", "Albany", "Kalgoorlie" -> "WA";
+            case "Adelaide", "Mount Gambier" -> "SA";
+            case "Hobart", "Launceston", "Devonport" -> "TAS";
+            case "Canberra" -> "ACT";
+            case "Darwin" -> "NT";
+            default -> "The Bush";
+        };
+    }
+
+    public static String getRandomPostcodeForState(String state) {
+        Random random = new Random();
+        List<int[]> ranges = switch (state.toUpperCase()) {
+            case "NSW" -> Arrays.asList(new int[]{1000, 2599}, new int[]{2620, 2899}, new int[]{2921, 2999});
+            case "VIC" -> Arrays.asList(new int[]{3000, 3999}, new int[]{8000, 8999});
+            case "QLD" -> Arrays.asList(new int[]{4000, 4999}, new int[]{9000, 9999});
+            case "SA"  -> Arrays.asList(new int[]{5000, 5799}, new int[]{5800, 5999});
+            case "WA"  -> Arrays.asList(new int[]{6000, 6797}, new int[]{6800, 6999});
+            case "TAS" -> Arrays.asList(new int[]{7000, 7799}, new int[]{7800, 7999});
+            case "ACT" -> Arrays.asList(new int[]{200, 299}, new int[]{2600, 2619}, new int[]{2900, 2920});
+            case "NT"  -> Arrays.asList(new int[]{800, 999});
+            default    -> Collections.emptyList();
+        };
+
+        if (ranges.isEmpty()) return "0000";
+
+        int[] range = ranges.get(random.nextInt(ranges.size()));
+        int lower = range[0], upper = range[1];
+        if (upper < lower) return "0000";
+
+        int postcode = lower + random.nextInt(upper - lower + 1);
+        return String.format("%04d", postcode);
     }
 }
