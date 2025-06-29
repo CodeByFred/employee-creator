@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <BrowserRouter basename="/">
+    <BrowserRouter>
       <main>
         <Routes>
           <Route path="/" element={<Navigate to="/employees" />} />
