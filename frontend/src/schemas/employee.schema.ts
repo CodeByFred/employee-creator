@@ -6,5 +6,4 @@ export const employeeSchema = z.object({
   email: z.email("Invalid email"),
   phone: z.string().regex(/^\d{10}$/, "Must be 10 digits"),
   address: z.string().min(1, "Required"),
-  roleId: z.number().gte(1),
 });

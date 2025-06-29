@@ -16,7 +16,6 @@ export type Contract = {
   finishDate: string;
   contractEmploymentType: "FULL_TIME" | "PART_TIME";
   hoursPerWeek: number;
-  employeeId: number;
 };
 
 export type Employee = {
@@ -26,6 +25,48 @@ export type Employee = {
   email: string;
   phone: string;
   address: string;
+};
+
+export type EmployeeSummary = {
+  id: number;
+  givenName: string;
+  surname: string;
+  email: string;
+  phone: string;
+  address: string;
+  role: string;
+  department: string;
+  isActive: boolean;
+};
+
+export type EmployeeResponse = {
+  id: number;
+  givenName: string;
+  surname: string;
+  email: string;
+  phone: string;
+  address: string;
+  employeeRoles: EmployeeRolesResponse[];
+};
+
+export type EmployeeRoles = {
+  employeeId: number;
+  roleId: number;
+  contractId: number;
+  // 0 is default
+  priorYearsOfExperience: number;
+  // NONE is default
+  promotionType: "NONE" | "PROMOTION" | "LATERAL" | "DEMOTION";
+  // 1 to 5
+  performanceRating: number;
+};
+
+export type EmployeeRolesResponse = {
+  id: number;
+  employee: Employee;
   role: Role;
-  contracts: Contract[];
+  contract: Contract;
+  priorYearsOfExperience: number;
+  promotionType: "NONE" | "PROMOTION" | "LATERAL" | "DEMOTION";
+  performanceRating: number;
 };

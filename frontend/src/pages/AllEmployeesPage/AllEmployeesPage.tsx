@@ -1,19 +1,20 @@
 import classes from "./AllEmployeesPage.module.scss";
 import { useState, useEffect } from "react";
 import { deleteEmployee, getAllEmployees } from "../../services/employeeService";
-import type { Employee } from "../../types/types";
+import type { EmployeeResponse } from "../../types/types";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard";
 import Banner from "../../components/Banner/Banner";
 import ContractModal from "../../components/ContractModal/ContractModal";
 import EmployeeModal from "../../components/EmployeeModal/EmployeeModal";
 
 const AllEmployeesPage = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
 
-  const [contractModalEmployee, setContractModalEmployee] = useState<Employee | null>(
+  const [contractModalEmployee, setContractModalEmployee] =
+    useState<EmployeeResponse | null>(null);
+  const [updateModalEmployee, setUpdateModalEmployee] = useState<EmployeeResponse | null>(
     null
   );
-  const [updateModalEmployee, setUpdateModalEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
     const fetchEmployees = async () => {

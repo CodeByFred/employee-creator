@@ -9,5 +9,4 @@ export const contractSchema = z.object({
     "Employment type is required"
   ),
   hoursPerWeek: z.number().gte(1),
-  employeeId: z.number().gte(1).optional(),
 });

@@ -2,12 +2,12 @@ import Button from "../Button/Button";
 import classes from "./EmployeeCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import type { Employee } from "../../types/types";
+import type { Employee, EmployeeSummary } from "../../types/types";
 import { Link } from "react-router-dom";
 import { formatRole } from "../../utils/utils";
 
 type Props = {
-  employee: Employee;
+  employee: EmployeeSummary;
   onSelect: (id: number) => void | Promise<void>;
   onViewContract: (employee: Employee) => void;
   onEdit: (employee: Employee) => void;
@@ -26,8 +26,7 @@ const EmployeeCard = ({ employee, onSelect, onViewContract, onEdit }: Props) => 
           <span>
             {employee.givenName} {employee.surname}{" "}
           </span>
-          | {formatRole(employee.role.roleType)} |{" "}
-          {formatRole(employee.role.department.department)}
+          | {formatRole(employee.role)} | {formatRole(employee.department)}
         </p>
         <p>{employee.phone}</p>
         <p>{employee.email}</p>
