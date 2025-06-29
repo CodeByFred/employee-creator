@@ -8,12 +8,12 @@ import { formatRole } from "../../utils/utils";
 
 type Props = {
   employee: EmployeeSummary;
-  onSelect: (id: number) => void | Promise<void>;
-  onViewContract: (employee: Employee) => void;
+  onArchive: (id: number) => void | Promise<void>;
+  onContractRole: (employee: Employee) => void;
   onEdit: (employee: Employee) => void;
 };
 
-const EmployeeCard = ({ employee, onSelect, onViewContract, onEdit }: Props) => {
+const EmployeeCard = ({ employee, onArchive, onContractRole, onEdit }: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -21,7 +21,7 @@ const EmployeeCard = ({ employee, onSelect, onViewContract, onEdit }: Props) => 
       </div>
 
       <div className={classes.details}>
-        <p>ID: {employee.id}</p>
+        {/* <p>ID: {employee.id}</p> */}
         <p>
           <span>
             {employee.givenName} {employee.surname}{" "}
@@ -35,16 +35,16 @@ const EmployeeCard = ({ employee, onSelect, onViewContract, onEdit }: Props) => 
 
       <div className={classes.buttons_container}>
         <Button variant="update" onClick={() => onEdit(employee)}>
-          Update
+          Edit Details
         </Button>
 
-        <Button variant="contract" onClick={() => onViewContract(employee)}>
-          View Contracts
+        <Button variant="contract" onClick={() => onContractRole(employee)}>
+          Contracts / Roles
         </Button>
 
         <Link to={`/employees`} state={employee}>
-          <Button onClick={() => onSelect(employee.id)} variant="delete">
-            Delete
+          <Button onClick={() => onArchive(employee.id)} variant="delete">
+            Archive
           </Button>
         </Link>
       </div>

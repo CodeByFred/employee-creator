@@ -6,54 +6,55 @@ import { z } from "zod/v4";
 import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBriefcase,
+  // faBriefcase,
   faEnvelope,
   faLocationDot,
   faPeopleGroup,
   faPhone,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import type { Role } from "../../types/types";
-import { useEffect, useState } from "react";
-import { getAllRoles } from "../../services/roleService";
-import { formatRole } from "../../utils/utils";
+// import type { Role } from "../../types/types";
+// import { useEffect, useState } from "react";
+// import { getAllRoles } from "../../services/roleService";
+// import { formatRole } from "../../utils/utils";
 
 type EmployeeForm = z.infer<typeof employeeSchema>;
 
 type Props = {
   onFormSubmit: (data: EmployeeForm) => unknown;
   defaultValues?: EmployeeForm;
+  closeModal?: () => void;
 };
 
-const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
+const EmployeeForm = ({ onFormSubmit, defaultValues, closeModal }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<EmployeeForm>({
     resolver: zodResolver(employeeSchema),
     defaultValues,
   });
 
-  const [roles, setRoles] = useState<Role[]>([]);
+  // const [roles, setRoles] = useState<Role[]>([]);
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      const data = await getAllRoles();
-      if (data) {
-        setRoles(data);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchRoles = async () => {
+  //     const data = await getAllRoles();
+  //     if (data) {
+  //       setRoles(data);
+  //     }
+  //   };
 
-    fetchRoles();
-  }, []);
+  //   fetchRoles();
+  // }, []);
 
-  useEffect(() => {
-    if (roles.length && defaultValues) {
-      reset(defaultValues);
-    }
-  }, [roles, defaultValues, reset]);
+  // useEffect(() => {
+  //   if (roles.length && defaultValues) {
+  //     reset(defaultValues);
+  //   }
+  // }, [roles, defaultValues, reset]);
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onFormSubmit)}>
@@ -115,7 +116,7 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
           <p>{errors.address?.message}</p>
         </div>
 
-        <div className={classes.field}>
+        {/* <div className={classes.field}>
           <label htmlFor="role">
             <FontAwesomeIcon icon={faBriefcase} className={classes.icon} />
             Role
@@ -131,11 +132,11 @@ const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
               ))}
           </select>
           <p>{errors.roleId?.message}</p>
-        </div>
+        </div> */}
 
         <div className={classes.row}>
-          <Button variant="delete" type="reset">
-            Clear
+          <Button variant="delete" onClick={closeModal}>
+            Cancel
           </Button>
           <Button variant="create" type="submit">
             Submit

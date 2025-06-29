@@ -1,12 +1,12 @@
 import api, { type APIErrorResponse } from "./axiosSetup";
-import type { Employee, EmployeeResponse } from "../types/types";
+import type { Employee, EmployeeSummary } from "../types/types";
 import EmployeeForm from "../components/EmployeeForm/EmployeeForm";
 import { EMPLOYEES_URL } from "./urls";
 import { toast } from "react-toastify";
 
-export const getAllEmployees = async (): Promise<EmployeeResponse[] | undefined> => {
+export const getAllEmployees = async (): Promise<EmployeeSummary[] | undefined> => {
   try {
-    const response = await api.get<EmployeeResponse[]>(EMPLOYEES_URL);
+    const response = await api.get<EmployeeSummary[]>(EMPLOYEES_URL);
     return response.data;
   } catch {
     toast.error("Failed to fetch employees");
