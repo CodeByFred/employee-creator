@@ -127,8 +127,6 @@ public class DataSeeder implements CommandLineRunner {
                     continue;
                 }
 
-//                RoleType roleType = faker.options().option(RoleType.class);
-
                 List<Role> allRoles = roleRepository.findAll();
                 Role role = allRoles.get(faker.number().numberBetween(1, allRoles.size()));
 
@@ -141,21 +139,15 @@ public class DataSeeder implements CommandLineRunner {
 
                 ContractType contractType = faker.options().option(ContractType.class);
 
-
-//                LocalDate startDate = faker.date().between(Date.from(LocalDate.of(2010, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant()), new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                LocalDate finishDate = faker.date().between(Date.from(LocalDate.of(2010, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant()), new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
                 TimeAndDate timeAndDate = faker.timeAndDate();
 
                 // Step 1: Generate a start date up to 30 days in the future
-                Date startDateRaw = Date.from(timeAndDate.future(30, TimeUnit.DAYS));
+                Date startDateRaw = Date.from(timeAndDate.past(180, TimeUnit.DAYS));
                 LocalDate startDate = startDateRaw.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
                 // Step 2: Add 3–12 months for end date
                 int monthsToAdd = faker.number().numberBetween(3, 13);
                 LocalDate endDate = startDate.plusMonths(monthsToAdd);
-
-
 
                 ContractEmploymentType employmentType = faker.options().option(ContractEmploymentType.class);
                 int hours = faker.number().numberBetween(1, 38);

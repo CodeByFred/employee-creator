@@ -1,6 +1,7 @@
 package io.nology.employeecreator.department;
 
 public enum DepartmentType {
+    UNASSIGNED,
     // Engineering & Development
     ENGINEERING,
     DEVOPS,

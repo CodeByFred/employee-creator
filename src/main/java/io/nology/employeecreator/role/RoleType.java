@@ -1,6 +1,7 @@
 package io.nology.employeecreator.role;
 
 public enum RoleType {
+    UNASSIGNED,
     // Engineering / Development
     SOFTWARE_ENGINEER,
     SENIOR_SOFTWARE_ENGINEER,

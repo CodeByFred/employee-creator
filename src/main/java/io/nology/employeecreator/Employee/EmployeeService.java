@@ -1,11 +1,19 @@
 package io.nology.employeecreator.employee;
 
+import io.nology.employeecreator.department.DepartmentType;
+import io.nology.employeecreator.employee.dtos.CreateEmployeeDTO;
+import io.nology.employeecreator.employee.dtos.EmployeeSummaryDTO;
+import io.nology.employeecreator.employee.dtos.UpdateEmployeeDTO;
+import io.nology.employeecreator.employeerole.EmployeeRole;
 import io.nology.employeecreator.exceptions.ServiceValidationException;
 import io.nology.employeecreator.exceptions.ValidationErrors;
+import io.nology.employeecreator.role.RoleType;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,17 +56,45 @@ public class EmployeeService {
         return saved;
     }
 
-    public List<Employee> findAll() {
-        log.debug("Fetching all employees");
-        return this.employeeRepository.findAll();
+    public List<EmployeeSummaryDTO> findAll() {
+        log.debug("Fetching all employee summaries");
+        List<Employee> employees = this.employeeRepository.findAll();
+
+        return employees.stream().map(employee -> {
+            // Find the employee role with an active contract
+            EmployeeRole currentRole = employee.getEmployeeRoles().stream()
+                    .filter(er -> er.getContract() != null && er.getContract().hasActiveContract())
+                    .max(Comparator.comparing(er -> er.getContract().getStartDate()))
+                    .orElse(null);
+
+            RoleType roleType = currentRole != null ? currentRole.getRole().getRoleType() : RoleType.UNASSIGNED;
+            DepartmentType department = currentRole != null ? currentRole.getRole().getDepartment().getDepartment() : DepartmentType.UNASSIGNED;
+
+            return new EmployeeSummaryDTO(
+                    employee.getId(),
+                    employee.getGivenName(),
+                    employee.getSurname(),
+                    employee.getEmail(),
+                    employee.getPhone(),
+                    employee.getAddress(),
+                    roleType,
+                    department,
+                    employee.isActive()
+            );
+        }).toList();
     }
+
+//    public List<Employee> findAll() {
+//        log.debug("Fetching all employees");
+//        return this.employeeRepository.findAll();
+//    }
 
     public Optional<Employee> findById(Long id) {
         log.debug("Fetching employee id {}", id);
         return this.employeeRepository.findById(id);
     }
 
-    public Optional<Employee> updateById(Long id, UpdateEmployeeDTO data) throws  ServiceValidationException {
+    public Optional<Employee> updateById(Long id, UpdateEmployeeDTO data) throws ServiceValidationException {
 
 
         Optional<Employee> foundEmployee = this.findById(id);
@@ -136,5 +172,7 @@ public class EmployeeService {
         return true;
     }
 
-
+//    public List<Employee> findByIsActive(Boolean isActive) {
+//        return employeeRepository.findByIsActive(isActive);
+//    }
 }

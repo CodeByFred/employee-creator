@@ -1,5 +1,8 @@
 package io.nology.employeecreator.employee;
 
+import io.nology.employeecreator.employee.dtos.CreateEmployeeDTO;
+import io.nology.employeecreator.employee.dtos.EmployeeSummaryDTO;
+import io.nology.employeecreator.employee.dtos.UpdateEmployeeDTO;
 import io.nology.employeecreator.exceptions.NotFoundException;
 import io.nology.employeecreator.exceptions.ServiceValidationException;
 import io.nology.employeecreator.exceptions.UpdateFailureException;
@@ -36,10 +39,22 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAll() {
-        log.debug("GET /employees - Fetching all employees");
+    public ResponseEntity<List<EmployeeSummaryDTO>> getAllEmployees(@RequestParam(required = false) Boolean isActive) {
+        log.debug("GET /employees - Fetching all employees: optional isActive={}", isActive);
+//        if(isActive != null) {
+//            return ResponseEntity.ok(this.employeeService.findAll());
+//        }
         return ResponseEntity.ok(this.employeeService.findAll());
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Employee>> getAll(@RequestParam(required = false) Boolean isActive) {
+//        log.debug("GET /employees - Fetching all employees: optional isActive={}", isActive);
+//        if(isActive != null) {
+//            return ResponseEntity.ok(employeeService.findByIsActive(isActive));
+//        }
+//        return ResponseEntity.ok(this.employeeService.findAll());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable Long id) throws NotFoundException {

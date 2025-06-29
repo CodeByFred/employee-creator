@@ -47,9 +47,9 @@ public class Contract {
     }
 
     // virtual field but on JSON
-    @JsonProperty("active")
+    @JsonProperty("hasActiveContract")
     @Transient
-    public boolean isActive() {
+    public boolean hasActiveContract() {
         LocalDate today = LocalDate.now();
         // startDate is required, finishDate is optional
         return startDate != null && !startDate.isAfter(today) && (finishDate == null || !finishDate.isBefore(today));

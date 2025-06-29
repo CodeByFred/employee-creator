@@ -1,4 +1,4 @@
-package io.nology.employeecreator.employee;
+package io.nology.employeecreator.employee.dtos;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

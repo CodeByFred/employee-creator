@@ -1,5 +1,6 @@
 package io.nology.employeecreator.employeerole;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.nology.employeecreator.contract.Contract;
 import io.nology.employeecreator.employee.Employee;
 import io.nology.employeecreator.role.Role;
@@ -23,6 +24,7 @@ public class EmployeeRole {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
+    @JsonBackReference
     private Employee employee;
 
     @ManyToOne
