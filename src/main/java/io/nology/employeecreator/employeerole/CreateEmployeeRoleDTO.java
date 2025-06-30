@@ -25,7 +25,6 @@ public class CreateEmployeeRoleDTO {
     @Enumerated(EnumType.STRING)
     private PromotionType promotionType;
 
-    @Min(1)
-    @Max(5)
+    @Min(0)
     private Integer performanceRating;
 }

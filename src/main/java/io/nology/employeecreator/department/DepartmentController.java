@@ -24,20 +24,27 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Department>> getAll() {
+    public ResponseEntity<List<DepartmentWithRolesDTO>> getAll() {
         log.debug("GET /departments - Fetching all departments");
-        return new ResponseEntity<>(this.departmentService.findAll(), HttpStatus.OK);
+
+        List<DepartmentWithRolesDTO> departments = departmentService.findAll().stream()
+                .map(DepartmentWithRolesDTO::new)
+                .toList();
+
+        return ResponseEntity.ok(departments);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) throws NotFoundException {
-        log.debug("GET /departments/id - Fetching department with id {}", id);
-        Optional<Department> foundDepartment = this.departmentService.findById(id);
-        if (foundDepartment.isPresent()) {
-            log.info("Department {} found", id);
-            return ResponseEntity.ok(foundDepartment.get());
-        }
-        log.warn("Department {} not found", id);
-        throw new NotFoundException("Department " + id + " does not exist");
+    public ResponseEntity<DepartmentWithRolesDTO> getDepartmentById(@PathVariable Long id) throws NotFoundException {
+        log.debug("GET /departments/{} - Fetching department", id);
+
+        Department department = departmentService.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Department {} not found", id);
+                    return new NotFoundException("Department " + id + " does not exist");
+                });
+
+        log.info("Department {} found", id);
+        return ResponseEntity.ok(new DepartmentWithRolesDTO(department));
     }
 }
