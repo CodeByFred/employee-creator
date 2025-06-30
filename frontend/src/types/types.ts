@@ -1,3 +1,12 @@
+export type DepartmentWithRoles = {
+  department: string;
+  departmentId: number;
+  roles: {
+    roleId: number;
+    roleType: string;
+  }[];
+};
+
 export type Department = {
   departmentId: number;
   department: string;
@@ -13,7 +22,7 @@ export type Contract = {
   id: number;
   contractType: "CONTRACT" | "PERMANENT";
   startDate: string;
-  finishDate: string;
+  finishDate?: string;
   contractEmploymentType: "FULL_TIME" | "PART_TIME";
   hoursPerWeek: number;
 };
@@ -46,7 +55,7 @@ export type EmployeeResponse = {
   email: string;
   phone: string;
   address: string;
-  employeeRoles: EmployeeRolesResponse[];
+  // employeeRoles: EmployeeRolesResponse[];
 };
 
 export type EmployeeRoles = {

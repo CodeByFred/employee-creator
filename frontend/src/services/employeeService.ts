@@ -1,5 +1,5 @@
 import api, { type APIErrorResponse } from "./axiosSetup";
-import type { Employee, EmployeeSummary } from "../types/types";
+import type { Employee, EmployeeResponse, EmployeeSummary } from "../types/types";
 import EmployeeForm from "../components/EmployeeForm/EmployeeForm";
 import { EMPLOYEES_URL } from "./urls";
 import { toast } from "react-toastify";
@@ -46,9 +46,7 @@ export const deleteEmployee = async (id: number): Promise<boolean> => {
 
 export const createEmployee = async (
   data: EmployeeForm
-): Promise<Employee | undefined> => {
-  console.log("Submitting employee:", data);
-
+): Promise<EmployeeResponse | undefined> => {
   const response = await api.post<APIErrorResponse>(EMPLOYEES_URL, data, {
     validateStatus: () => true,
   });

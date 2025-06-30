@@ -12,6 +12,6 @@ export const employeeRoleSchema = z.object({
   ),
   performanceRating: z
     .number()
-    .gte(1, "Minimum rating of 1 required")
+    .gte(0, "Minimum rating of 0 required")
     .lte(5, "Maximum rating cannot exceed 5"),
 });
