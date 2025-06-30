@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import type { Employee, EmployeeSummary } from "../../types/types";
 import { Link } from "react-router-dom";
-import { formatRole } from "../../utils/utils";
+import { formatEnum } from "../../utils/utils";
 
 type Props = {
   employee: EmployeeSummary;
@@ -26,7 +26,7 @@ const EmployeeCard = ({ employee, onArchive, onContractRole, onEdit }: Props) =>
           <span>
             {employee.givenName} {employee.surname}{" "}
           </span>
-          | {formatRole(employee.role)} | {formatRole(employee.department)}
+          | {formatEnum(employee.role)} | {formatEnum(employee.department)}
         </p>
         <p>{employee.phone}</p>
         <p>{employee.email}</p>

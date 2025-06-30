@@ -5,8 +5,6 @@ import { contractSchema } from "../../schemas/contract.schema";
 import Button from "../Button/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createContract } from "../../services/contractService";
-import type { Employee } from "../../types/types";
 import {
   faBusinessTime,
   faCalendarDays,
@@ -14,23 +12,15 @@ import {
   faFileSignature,
 } from "@fortawesome/free-solid-svg-icons";
 
-type ContractForm = z.infer<typeof contractSchema>;
+type ContractForm = z.input<typeof contractSchema>;
 
 type Props = {
-  defaultValues?: ContractForm;
+  onFormSubmit: (data: ContractForm) => unknown;
+  defaultValues?: Partial<ContractForm>;
   readOnly?: boolean;
-  employee: Employee;
-  onSuccess?: () => void;
 };
 
-const ContractForm = ({
-  defaultValues,
-  readOnly = false,
-  employee,
-  onSuccess,
-}: Props) => {
-  const employeeId = employee.id;
-
+const ContractForm = ({ defaultValues, readOnly = false, onFormSubmit }: Props) => {
   const {
     register,
     handleSubmit,
@@ -40,19 +30,8 @@ const ContractForm = ({
     defaultValues,
   });
 
-  const onSubmit = async (data: ContractForm) => {
-    const contractWithEmployeeId = {
-      ...data,
-      employeeId,
-    };
-    const result = await createContract(contractWithEmployeeId);
-    if (result && onSuccess) {
-      onSuccess();
-    }
-  };
-
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={classes.form} onSubmit={handleSubmit(onFormSubmit)}>
       <fieldset className={classes.fieldset}>
         <legend>Contract Details</legend>
 

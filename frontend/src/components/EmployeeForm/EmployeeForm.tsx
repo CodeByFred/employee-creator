@@ -6,23 +6,18 @@ import { z } from "zod/v4";
 import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  // faBriefcase,
   faEnvelope,
   faLocationDot,
   faPeopleGroup,
   faPhone,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-// import type { Role } from "../../types/types";
-// import { useEffect, useState } from "react";
-// import { getAllRoles } from "../../services/roleService";
-// import { formatRole } from "../../utils/utils";
 
 type EmployeeForm = z.infer<typeof employeeSchema>;
 
 type Props = {
   onFormSubmit: (data: EmployeeForm) => unknown;
-  defaultValues?: EmployeeForm;
+  defaultValues?: Partial<EmployeeForm>;
   closeModal?: () => void;
 };
 
@@ -36,25 +31,6 @@ const EmployeeForm = ({ onFormSubmit, defaultValues, closeModal }: Props) => {
     resolver: zodResolver(employeeSchema),
     defaultValues,
   });
-
-  // const [roles, setRoles] = useState<Role[]>([]);
-
-  // useEffect(() => {
-  //   const fetchRoles = async () => {
-  //     const data = await getAllRoles();
-  //     if (data) {
-  //       setRoles(data);
-  //     }
-  //   };
-
-  //   fetchRoles();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (roles.length && defaultValues) {
-  //     reset(defaultValues);
-  //   }
-  // }, [roles, defaultValues, reset]);
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onFormSubmit)}>
@@ -115,25 +91,6 @@ const EmployeeForm = ({ onFormSubmit, defaultValues, closeModal }: Props) => {
           <input {...register("address")} id="address" placeholder="Enter your address" />
           <p>{errors.address?.message}</p>
         </div>
-
-        {/* <div className={classes.field}>
-          <label htmlFor="role">
-            <FontAwesomeIcon icon={faBriefcase} className={classes.icon} />
-            Role
-          </label>
-          <select {...register("roleId", { valueAsNumber: true })} id="role">
-            <option value="">Select a role</option>
-            {[...roles]
-              .sort((a, b) => a.roleType.localeCompare(b.roleType))
-              .map((role) => (
-                <option key={role.roleId} value={role.roleId}>
-                  {formatRole(role.roleType)} ({formatRole(role.department.department)})
-                </option>
-              ))}
-          </select>
-          <p>{errors.roleId?.message}</p>
-        </div> */}
-
         <div className={classes.row}>
           <Button variant="delete" onClick={closeModal}>
             Cancel

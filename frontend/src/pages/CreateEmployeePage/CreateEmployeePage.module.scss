@@ -7,10 +7,3 @@
   width: 85%;
   min-height: 100vh;
 }
-
-.forms {
-  @include mixins.flex(row, center, center);
-  margin-top: 4rem;
-  width: 100%;
-  gap: 7rem;
-}
