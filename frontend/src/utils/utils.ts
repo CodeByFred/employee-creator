@@ -1,1 +1,1 @@
-export const formatRole = (roleType: string): string => roleType.replace(/_/g, " ");
+export const formatEnum = (enumType: string): string => enumType.replace(/_/g, " ");
