@@ -2,7 +2,6 @@ package io.nology.employeecreator.employeerole;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.nology.employeecreator.contract.Contract;
-import io.nology.employeecreator.employee.Employee;
 import io.nology.employeecreator.role.Role;
 import jakarta.persistence.*;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "employee_roles",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"employee_id", "role_id", "contract_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"role_id", "contract_id"}))
 public class EmployeeRole {
 
     @Id
@@ -23,16 +22,12 @@ public class EmployeeRole {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    @JsonBackReference
-    private Employee employee;
-
-    @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @ManyToOne
     @JoinColumn(name = "contract_id", nullable = false)
+    @JsonBackReference
     private Contract contract;
 
     private Integer priorYearsOfExperience;

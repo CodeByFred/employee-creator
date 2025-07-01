@@ -35,12 +35,6 @@ public class EmployeeRoleController {
         return ResponseEntity.ok(this.employeeRoleService.findAll());
     }
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<List<EmployeeRole>> getRolesForEmployee(@PathVariable Long id) throws NotFoundException {
-        log.debug("GET /employee_roles/employee/id - Fetching employee roles for employee {}", id);
-        return ResponseEntity.ok(this.employeeRoleService.findByEmployeeId(id));
-    }
-
     @PatchMapping("/{id}")
     public ResponseEntity<EmployeeRole>  updateEmployeeRole(@PathVariable Long id, @Valid @RequestBody UpdateEmployeeRoleDTO data) throws NotFoundException, ServiceValidationException {
         EmployeeRole updated = this.employeeRoleService.update(id, data);
