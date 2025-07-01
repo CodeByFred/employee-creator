@@ -171,10 +171,10 @@ public class DataSeeder implements CommandLineRunner {
                 emails.add(email);
                 phoneNumbers.add(auMobile);
                 this.employeeRepository.save(employee);
+                contract.setEmployee(employee);
                 this.contractRepository.save(contract);
 
                 EmployeeRole employeeRole = new EmployeeRole();
-                employeeRole.setEmployee(employee);
                 employeeRole.setContract(contract);
                 employeeRole.setRole(role);
                 employeeRole.setPriorYearsOfExperience(faker.number().numberBetween(1,30));
