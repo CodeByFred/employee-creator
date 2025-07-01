@@ -38,23 +38,17 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+//    GET /employees -> all employees
+//    GET /employees?active=true -> only active
+//    GET /employees?active=false -> only inactive
     @GetMapping
-    public ResponseEntity<List<EmployeeSummaryDTO>> getAllEmployees(@RequestParam(required = false) Boolean isActive) {
-        log.debug("GET /employees - Fetching all employees: optional isActive={}", isActive);
-//        if(isActive != null) {
-//            return ResponseEntity.ok(this.employeeService.findAll());
-//        }
+    public ResponseEntity<List<EmployeeSummaryDTO>> getAllEmployees(@RequestParam(required = false) Boolean active) {
+        log.debug("GET /employees - Fetching all employees: optional active={}", active);
+        if (active != null) {
+            return ResponseEntity.ok(employeeService.findAllByActive(active));
+        }
         return ResponseEntity.ok(this.employeeService.findAll());
     }
-
-//    @GetMapping
-//    public ResponseEntity<List<Employee>> getAll(@RequestParam(required = false) Boolean isActive) {
-//        log.debug("GET /employees - Fetching all employees: optional isActive={}", isActive);
-//        if(isActive != null) {
-//            return ResponseEntity.ok(employeeService.findByIsActive(isActive));
-//        }
-//        return ResponseEntity.ok(this.employeeService.findAll());
-//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable Long id) throws NotFoundException {

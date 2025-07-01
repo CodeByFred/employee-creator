@@ -1,7 +1,7 @@
 package io.nology.employeecreator.employee;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.nology.employeecreator.employeerole.EmployeeRole;
+import io.nology.employeecreator.contract.Contract;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -34,9 +34,9 @@ public class Employee {
     private String address;
 
     @Column(nullable = false)
-    private boolean isActive = true;
+    private boolean active = true;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<EmployeeRole> employeeRoles = new ArrayList<>();
+    private List<Contract> contracts = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package io.nology.employeecreator.employee;
 
+import io.nology.employeecreator.contract.Contract;
 import io.nology.employeecreator.department.DepartmentType;
 import io.nology.employeecreator.employee.dtos.CreateEmployeeDTO;
 import io.nology.employeecreator.employee.dtos.EmployeeSummaryDTO;
@@ -25,6 +26,10 @@ public class EmployeeService {
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
+    }
+
+    private static EmployeeSummaryDTO apply(Employee employee) {
+        return getEmployeeSummaryDTO(employee);
     }
 
     public Employee create(@Valid CreateEmployeeDTO data) throws ServiceValidationException {
@@ -57,31 +62,11 @@ public class EmployeeService {
     }
 
     public List<EmployeeSummaryDTO> findAll() {
+        LocalDate today = LocalDate.now();
         log.debug("Fetching all employee summaries");
-        List<Employee> employees = this.employeeRepository.findAll();
 
-        return employees.stream().map(employee -> {
-            // Find the employee role with an active contract
-            EmployeeRole currentRole = employee.getEmployeeRoles().stream()
-                    .filter(er -> er.getContract() != null && er.getContract().hasActiveContract())
-                    .max(Comparator.comparing(er -> er.getContract().getStartDate()))
-                    .orElse(null);
-
-            RoleType roleType = currentRole != null ? currentRole.getRole().getRoleType() : RoleType.UNASSIGNED;
-            DepartmentType department = currentRole != null ? currentRole.getRole().getDepartment().getDepartment() : DepartmentType.UNASSIGNED;
-
-            return new EmployeeSummaryDTO(
-                    employee.getId(),
-                    employee.getGivenName(),
-                    employee.getSurname(),
-                    employee.getEmail(),
-                    employee.getPhone(),
-                    employee.getAddress(),
-                    roleType,
-                    department,
-                    employee.isActive()
-            );
-        }).toList();
+        return employeeRepository.findAll().stream()
+                .map(EmployeeService::apply).toList();
     }
 
 //    public List<Employee> findAll() {
@@ -172,7 +157,40 @@ public class EmployeeService {
         return true;
     }
 
-//    public List<Employee> findByIsActive(Boolean isActive) {
-//        return employeeRepository.findByIsActive(isActive);
-//    }
+    public List<EmployeeSummaryDTO> findAllByActive(Boolean active) {
+        LocalDate today = LocalDate.now();
+        log.debug("Fetching all employee summaries by active status");
+
+        return employeeRepository.findAllByActive(active).stream()
+                .map(EmployeeService::getEmployeeSummaryDTO).toList();
+    }
+
+    private static EmployeeSummaryDTO getEmployeeSummaryDTO(Employee employee) {
+        Optional<Contract> optContract = employee.getContracts().stream()
+                .filter(Contract::hasActiveContract)
+                .max(Comparator.comparing(Contract::getStartDate));
+
+        EmployeeRole currentRole = optContract
+                .flatMap(c -> c.getEmployeeRoles().stream().findFirst())
+                .orElse(null);
+
+        RoleType roleType = currentRole != null
+                ? currentRole.getRole().getRoleType()
+                : RoleType.UNASSIGNED;
+        DepartmentType department = currentRole != null
+                ? currentRole.getRole().getDepartment().getDepartment()
+                : DepartmentType.UNASSIGNED;
+
+        return new EmployeeSummaryDTO(
+                employee.getId(),
+                employee.getGivenName(),
+                employee.getSurname(),
+                employee.getEmail(),
+                employee.getPhone(),
+                employee.getAddress(),
+                roleType,
+                department,
+                employee.isActive()
+        );
+    }
 }
