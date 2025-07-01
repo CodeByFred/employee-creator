@@ -26,6 +26,9 @@ public class CreateContractDTO {
     @Max(value = 38, message = "38 is the maximum number of hours per week")
     private Integer hoursPerWeek;
 
+    @NotNull
+    private Long employeeId;
+
     @AssertTrue(message = "Finish date must be after start date")
     public boolean isValidDateRange() {
         if (startDate == null || finishDate == null) {

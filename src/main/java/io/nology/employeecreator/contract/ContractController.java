@@ -48,6 +48,12 @@ public class ContractController {
         throw new NotFoundException("Contract " + id + " does not exist");
     }
 
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<List<Contract>> getByEmployeeId(@PathVariable Long id) throws NotFoundException {
+        log.debug("GET /contracts/employeeId - Fetching contracts by employee id");
+        return ResponseEntity.ok(this.contractService.findByEmployeeId(id));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<Contract>  updateContract(@PathVariable Long id, @Valid @RequestBody UpdateContractDTO data) throws NotFoundException, ServiceValidationException {
         log.debug("PATCH /contracts/id - Updating contract with id {}", id);
@@ -55,5 +61,4 @@ public class ContractController {
         log.info("Contract updated with id {}", updatedContract.getId());
         return ResponseEntity.ok(updatedContract);
     }
-
 }
