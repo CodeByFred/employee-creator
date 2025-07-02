@@ -18,6 +18,7 @@ import {
   type RoleInput,
 } from "../../context/CreateEmployeeContext";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const steps = ["employee", "contract", "role", "review"] as const;
 type Step = (typeof steps)[number];
@@ -55,42 +56,36 @@ const CreateEmployeeFlow = () => {
   };
 
   const handleFinalSubmit = async () => {
-    // cast your partials back to full inputs
     const employeeInput = employee as EmployeeInput;
     const contractInput = { ...contract } as ContractInput;
     const roleInput = employeeRole as RoleInput;
 
     try {
-      // 1) Create employee
       const createdEmployee = await createEmployee(employeeInput);
       if (!createdEmployee?.id) {
-        console.error("Failed to create employee");
-        return; // stop here
+        return;
       }
 
-      // 2) Create contract, injecting employeeId
-      const createdContract = await createContract(contractInput);
+      const createdContract = await createContract({
+        ...contractInput,
+        employeeId: createdEmployee.id,
+      });
       if (!createdContract?.id) {
-        console.error("Failed to create contract");
-        return; // stop here
+        return;
       }
 
-      // 3) Create employeeRole, injecting both IDs
       const createdEmployeeRole = await createEmployeeRole({
         ...roleInput,
-        employeeId: createdEmployee.id,
         contractId: createdContract.id,
       });
       if (!createdEmployeeRole?.id) {
-        console.error("Failed to create employee role");
-        return; // stop here
+        return;
       }
 
-      // 4) All done—clear context and go home
       reset();
       navigate("/employees");
-    } catch (err) {
-      console.error("Submission failed", err);
+    } catch {
+      toast.error("Submission Failed");
     }
   };
 
@@ -129,17 +124,17 @@ const CreateEmployeeFlow = () => {
   };
 
   return (
-    <>
+    <div>
       {renderStep()}
       {step !== "employee" && (
-        <Button variant="delete" onClick={goToPrevious}>
+        <Button variant="contract" onClick={goToPrevious}>
           Back
         </Button>
       )}
-      <Button variant="update" onClick={handleCancel}>
+      <Button variant="delete" onClick={handleCancel}>
         Cancel
       </Button>
-    </>
+    </div>
   );
 };
 
