@@ -11,7 +11,7 @@ export const getAllEmployeeRoles = async (): Promise<
     const response = await api.get<EmployeeRolesResponse[]>(EMPLOYEE_ROLES_URL);
     return response.data;
   } catch {
-    toast.error("Failed to fetch employees");
+    toast.error("Failed to fetch employee roles");
     return undefined;
   }
 };
@@ -25,13 +25,13 @@ export const getEmployeeRoleByEmployeeId = async (
     );
     return response.data;
   } catch {
-    toast.error("Failed to fetch employee role for employee");
+    toast.error("Failed to fetch employee information");
     return undefined;
   }
 };
 
 export const createEmployeeRole = async (
-  data: EmployeeRoleForm & { employeeId: number; contractId: number }
+  data: EmployeeRoleForm & { contractId: number }
 ) => {
   const response = await api.post<APIErrorResponse>(EMPLOYEE_ROLES_URL, data, {
     validateStatus: () => true,

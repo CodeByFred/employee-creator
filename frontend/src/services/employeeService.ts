@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 export const getAllEmployees = async (): Promise<EmployeeSummary[] | undefined> => {
   try {
-    const response = await api.get<EmployeeSummary[]>(EMPLOYEES_URL);
+    const response = await api.get<EmployeeSummary[]>(EMPLOYEES_URL + `?false`);
     return response.data;
   } catch {
     toast.error("Failed to fetch employees");
@@ -24,10 +24,14 @@ export const getEmployeeById = async (id: number): Promise<Employee | undefined>
   }
 };
 
-export const toggleIsActive = async (id: number): Promise<void> => {
+export const toggleIsActive = async (id: number): Promise<Employee | undefined> => {
   try {
-    await api.put(EMPLOYEES_URL + `/${id}/toggleIsActive`);
-    toast.success("Employee status updated");
+    const response = await api.put(EMPLOYEES_URL + `/${id}/toggleIsActive`);
+
+    if (response.status === 200) {
+      toast.success("Employee active status updated");
+      return;
+    }
   } catch {
     toast.error("Failed to set active status of employee");
   }
@@ -62,7 +66,7 @@ export const createEmployee = async (
       messages.forEach((msg) => toast.error(msg));
     });
   } else {
-    toast.error("Request failed");
+    toast.error("Employee could not be created");
   }
 
   return undefined;
@@ -84,6 +88,6 @@ export const updateEmployee = async (data: EmployeeForm, id: number): Promise<vo
       messages.forEach((msg) => toast.error(msg));
     });
   } else {
-    toast.error("Request failed");
+    toast.error("Employee could not be updated");
   }
 };
