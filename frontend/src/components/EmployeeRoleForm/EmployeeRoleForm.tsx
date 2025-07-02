@@ -106,7 +106,7 @@ const EmployeeRoleForm = ({ onFormSubmit, defaultValues }: Props) => {
             <div className={classes.row}>
               <label>
                 <input type="radio" value="NONE" {...register("promotionType")} />
-                None
+                New Employee
               </label>
               <label>
                 <input type="radio" value="PROMOTION" {...register("promotionType")} />
@@ -139,16 +139,10 @@ const EmployeeRoleForm = ({ onFormSubmit, defaultValues }: Props) => {
             </select>
             <p>{errors.performanceRating?.message}</p>
           </div>
-
-          <div className={classes.row}>
-            <Button variant="delete" type="reset">
-              Clear
-            </Button>
-            <Button variant="create" type="submit">
-              Submit
-            </Button>
-          </div>
         </div>
+        <Button variant="create" type="submit">
+          Submit
+        </Button>
       </fieldset>
     </form>
   );

@@ -136,9 +136,6 @@ const ContractForm = ({ defaultValues, readOnly = false, onFormSubmit }: Props) 
         </div>
 
         <div className={classes.row}>
-          <Button variant="delete" type="reset">
-            Clear
-          </Button>
           <Button variant="create" type="submit">
             Submit
           </Button>
