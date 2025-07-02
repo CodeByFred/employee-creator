@@ -18,10 +18,9 @@ type EmployeeForm = z.infer<typeof employeeSchema>;
 type Props = {
   onFormSubmit: (data: EmployeeForm) => unknown;
   defaultValues?: Partial<EmployeeForm>;
-  closeModal?: () => void;
 };
 
-const EmployeeForm = ({ onFormSubmit, defaultValues, closeModal }: Props) => {
+const EmployeeForm = ({ onFormSubmit, defaultValues }: Props) => {
   const {
     register,
     handleSubmit,
@@ -92,9 +91,6 @@ const EmployeeForm = ({ onFormSubmit, defaultValues, closeModal }: Props) => {
           <p>{errors.address?.message}</p>
         </div>
         <div className={classes.row}>
-          <Button variant="delete" onClick={closeModal}>
-            Cancel
-          </Button>
           <Button variant="create" type="submit">
             Submit
           </Button>
