@@ -7,26 +7,6 @@ export type DepartmentWithRoles = {
   }[];
 };
 
-export type Department = {
-  departmentId: number;
-  department: string;
-};
-
-export type Role = {
-  roleId: number;
-  roleType: string;
-  department: Department;
-};
-
-export type Contract = {
-  id: number;
-  contractType: "CONTRACT" | "PERMANENT";
-  startDate: string;
-  finishDate?: string;
-  contractEmploymentType: "FULL_TIME" | "PART_TIME";
-  hoursPerWeek: number;
-};
-
 export type Employee = {
   id: number;
   givenName: string;
@@ -55,27 +35,57 @@ export type EmployeeResponse = {
   email: string;
   phone: string;
   address: string;
-  // employeeRoles: EmployeeRolesResponse[];
 };
 
 export type EmployeeRoles = {
   employeeId: number;
   roleId: number;
   contractId: number;
-  // 0 is default
   priorYearsOfExperience: number;
-  // NONE is default
   promotionType: "NONE" | "PROMOTION" | "LATERAL" | "DEMOTION";
-  // 1 to 5
   performanceRating: number;
 };
 
 export type EmployeeRolesResponse = {
   id: number;
-  employee: Employee;
   role: Role;
   contract: Contract;
   priorYearsOfExperience: number;
   promotionType: "NONE" | "PROMOTION" | "LATERAL" | "DEMOTION";
   performanceRating: number;
+};
+
+export type Department = {
+  departmentId: number;
+  department: string;
+};
+
+export type Role = {
+  roleId: number;
+  roleType: string;
+  department: Department;
+};
+
+export type Contract = {
+  id: number;
+  employee_id: number;
+  contractType: "CONTRACT" | "PERMANENT";
+  startDate: string;
+  finishDate?: string;
+  contractEmploymentType: "FULL_TIME" | "PART_TIME";
+  hoursPerWeek: number;
+  hasActiveContract: boolean;
+};
+
+export type ContractsForEmployeeResponse = {
+  id: number;
+  employeeRoles: EmployeeRolesResponse[];
+  contractType: "CONTRACT" | "PERMANENT";
+  startDate: string;
+  finishDate?: string;
+  contractEmploymentType: "FULL_TIME" | "PART_TIME";
+  hoursPerWeek: number;
+  createdAt: string;
+  updatedAt: string;
+  hasActiveContract: boolean;
 };
