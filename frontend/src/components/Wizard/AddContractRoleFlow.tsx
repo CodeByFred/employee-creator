@@ -57,7 +57,7 @@ export default function AddContractRoleFlow({ employeeId }: Props) {
   };
 
   return (
-    <div>
+    <>
       {step === "contract" && (
         <ContractForm onFormSubmit={onContractSubmit} defaultValues={contractData} />
       )}
@@ -74,7 +74,7 @@ export default function AddContractRoleFlow({ employeeId }: Props) {
         />
       )}
 
-      <div>
+      <>
         {step !== "contract" && (
           <Button variant="contract" onClick={back}>
             Back
@@ -83,7 +83,7 @@ export default function AddContractRoleFlow({ employeeId }: Props) {
         <Button variant="delete" onClick={() => navigate("/employees")}>
           Cancel
         </Button>
-      </div>
-    </div>
+      </>
+    </>
   );
 }

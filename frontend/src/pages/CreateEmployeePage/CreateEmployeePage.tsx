@@ -11,7 +11,9 @@ const CreateEmployeePage = () => {
   return (
     <div className={classes.container}>
       <Banner />
-      {employee ? <AddContractRoleFlow employeeId={employee} /> : <CreationWizard />}
+      <div className={classes.wizard}>
+        {employee ? <AddContractRoleFlow employeeId={employee} /> : <CreationWizard />}
+      </div>
     </div>
   );
 };

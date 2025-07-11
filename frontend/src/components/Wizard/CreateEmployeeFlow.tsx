@@ -124,7 +124,7 @@ const CreateEmployeeFlow = () => {
   };
 
   return (
-    <div>
+    <>
       {renderStep()}
       {step !== "employee" && (
         <Button variant="contract" onClick={goToPrevious}>
@@ -134,7 +134,7 @@ const CreateEmployeeFlow = () => {
       <Button variant="delete" onClick={handleCancel}>
         Cancel
       </Button>
-    </div>
+    </>
   );
 };
 
