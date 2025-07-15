@@ -33,6 +33,13 @@ public class ContractService {
             throw new  NotFoundException("Employee " + data.getEmployeeId() + " does not exist");
         }
 
+        if(employee.get().getContracts().stream().anyMatch(Contract::hasActiveContract)) {
+            log.warn("Employee with id {} already has active contract", data.getEmployeeId());
+            ValidationErrors errors = new ValidationErrors();
+            errors.add("contract", "Employee with id " + data.getEmployeeId() + " already has active contract");
+            throw new ServiceValidationException(errors);
+        }
+
         Contract newContract = new Contract();
         newContract.setContractType(data.getContractType());
         newContract.setStartDate(data.getStartDate());

@@ -44,14 +44,16 @@ const ContractModal = ({ employee, closeModal }: Props) => {
         )}
         <div className={classes.row}>
           <Button variant="contract">View History</Button>
-          <Button
-            variant="update"
-            onClick={() =>
-              navigate("/employees/create", { state: { employee: employee.id } })
-            }
-          >
-            Create New Contract
-          </Button>
+          {!activeContract && (
+            <Button
+              variant="update"
+              onClick={() =>
+                navigate("/employees/create", { state: { employee: employee.id } })
+              }
+            >
+              Create New Contract
+            </Button>
+          )}
         </div>
       </div>
     </div>
