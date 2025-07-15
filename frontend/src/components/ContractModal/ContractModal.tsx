@@ -1,51 +1,58 @@
 import classes from "./ContractModal.module.scss";
 import ContractForm from "../ContractForm/ContractForm";
-import type { Employee } from "../../types/types";
-import { useState } from "react";
-import { getEmployeeById } from "../../services/employeeService";
+import { useEffect, useState } from "react";
+import { getEmployeeContractsByEmployeeId } from "../../services/contractService";
+import type { ContractsForEmployeeResponse, EmployeeSummary } from "../../types/types";
+import Button from "../Button/Button";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
-  employee: Employee;
+  employee: EmployeeSummary;
   closeModal: () => void;
 };
 
 const ContractModal = ({ employee, closeModal }: Props) => {
-  const [employeeState, setEmployeeState] = useState(employee);
+  const [activeContract, setActiveContract] =
+    useState<ContractsForEmployeeResponse | null>(null);
 
-  const refreshEmployee = async () => {
-    const updated = await getEmployeeById(employeeState.id);
-    if (updated) {
-      setEmployeeState(updated);
-    }
-  };
+  useEffect(() => {
+    getEmployeeContractsByEmployeeId(employee.id).then((contracts) => {
+      if (contracts) {
+        const active = contracts.find((c) => c.hasActiveContract) ?? null;
+        setActiveContract(active);
+      }
+    });
+  }, [employee.id]);
 
-  const hasContracts =
-    Array.isArray(employeeState.contracts) && employeeState.contracts.length > 0;
-
-  const handleContractCreated = async () => {
-    await refreshEmployee();
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className={classes.container} onClick={closeModal}>
+    <div className={classes.container}>
       <div className={classes.modal_info} onClick={(e) => e.stopPropagation()}>
         <button onClick={closeModal} className={classes.close}>
           X
         </button>
-        {hasContracts ? (
-          <ContractForm
-            defaultValues={employeeState.contracts[0]}
-            employee={employeeState}
-            readOnly
-          />
+        {activeContract ? (
+          <ContractForm defaultValues={activeContract} onFormSubmit={() => {}} readOnly />
         ) : (
           <>
-            <ContractForm employee={employeeState} onSuccess={handleContractCreated} />
+            <ContractForm disableSubmit={employee != null} onFormSubmit={() => {}} />
             <p>
-              No contract found for {employeeState.givenName} {employeeState.surname}
+              No active contract found for {employee.givenName} {employee.surname}
             </p>
           </>
         )}
+        <div className={classes.row}>
+          <Button variant="contract">View History</Button>
+          <Button
+            variant="update"
+            onClick={() =>
+              navigate("/employees/create", { state: { employee: employee.id } })
+            }
+          >
+            Create New Contract
+          </Button>
+        </div>
       </div>
     </div>
   );

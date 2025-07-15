@@ -32,3 +32,8 @@
   background: transparent;
   cursor: pointer;
 }
+
+.row {
+  @include mixins.flex(row, center, center);
+  gap: 2rem;
+}

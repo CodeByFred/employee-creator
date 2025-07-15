@@ -18,9 +18,15 @@ type Props = {
   onFormSubmit: (data: ContractForm) => unknown;
   defaultValues?: Partial<ContractForm>;
   readOnly?: boolean;
+  disableSubmit?: boolean;
 };
 
-const ContractForm = ({ defaultValues, readOnly = false, onFormSubmit }: Props) => {
+const ContractForm = ({
+  defaultValues,
+  readOnly = false,
+  onFormSubmit,
+  disableSubmit,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -136,9 +142,13 @@ const ContractForm = ({ defaultValues, readOnly = false, onFormSubmit }: Props) 
         </div>
 
         <div className={classes.row}>
-          <Button variant="create" type="submit">
-            Submit
-          </Button>
+          {readOnly ? (
+            <Button variant="delete">End Contract</Button>
+          ) : (
+            <Button variant="create" type="submit" disabled={disableSubmit}>
+              Submit
+            </Button>
+          )}
         </div>
       </fieldset>
     </form>
