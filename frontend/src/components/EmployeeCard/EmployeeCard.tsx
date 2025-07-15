@@ -3,17 +3,26 @@ import classes from "./EmployeeCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import type { Employee, EmployeeSummary } from "../../types/types";
-import { Link } from "react-router-dom";
 import { formatEnum } from "../../utils/utils";
+import { useState } from "react";
 
 type Props = {
   employee: EmployeeSummary;
   onArchive: (id: number) => void | Promise<void>;
+  onDelete: (id: number) => void | Promise<void>;
   onContractRole: (employee: Employee) => void;
   onEdit: (employee: Employee) => void;
 };
 
-const EmployeeCard = ({ employee, onArchive, onContractRole, onEdit }: Props) => {
+const EmployeeCard = ({
+  employee,
+  onArchive,
+  onDelete,
+  onContractRole,
+  onEdit,
+}: Props) => {
+  const [confirming, setConfirming] = useState(false);
+
   return (
     <div className={classes.container}>
       <div className={classes.iconCell}>
@@ -21,7 +30,6 @@ const EmployeeCard = ({ employee, onArchive, onContractRole, onEdit }: Props) =>
       </div>
 
       <div className={classes.details}>
-        {/* <p>ID: {employee.id}</p> */}
         <p>
           <span>
             {employee.givenName} {employee.surname}{" "}
@@ -42,12 +50,49 @@ const EmployeeCard = ({ employee, onArchive, onContractRole, onEdit }: Props) =>
           Contracts / Roles
         </Button>
 
-        <Link to={`/employees`} state={employee}>
-          <Button onClick={() => onArchive(employee.id)} variant="delete">
-            Archive
-          </Button>
-        </Link>
+        {/* activating modal to select deletion type (not calling the achive/delete function yet) */}
+        <Button variant="delete" onClick={() => setConfirming(true)}>
+          Archive
+        </Button>
       </div>
+
+      {/* confirmation modal */}
+      {confirming && (
+        <div className={classes.confirmOverlay} onClick={() => setConfirming(false)}>
+          <div className={classes.confirmBox} onClick={(e) => e.stopPropagation()}>
+            <p>
+              Are you sure you want to archive{" "}
+              <strong>
+                {employee.givenName} {employee.surname}
+              </strong>
+              ?
+            </p>
+            <div className={classes.confirmButtons}>
+              <Button variant="contract" onClick={() => setConfirming(false)}>
+                Cancel
+              </Button>
+              <Button
+                variant="create"
+                onClick={() => {
+                  onArchive(employee.id);
+                  setConfirming(false);
+                }}
+              >
+                Yes
+              </Button>
+              <Button
+                variant="delete"
+                onClick={() => {
+                  onDelete(employee.id);
+                  setConfirming(false);
+                }}
+              >
+                Delete Employee
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
